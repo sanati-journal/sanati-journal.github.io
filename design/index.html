@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Design your journal | Sanati</title>
+<style>
+:root{--bg:#f6f1e7;--card:#fffdf8;--ink:#3b2f25;--mut:#8a7a6a;--acc:#c0773a;--acc2:#e9c9a4;--line:#e6dccb;--ok:#4f8a5b}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:640px;margin:0 auto;padding:14px 16px 140px}
+.topbar{display:flex;justify-content:flex-end}
+.topbar select{width:auto;padding:6px 8px;font-size:13px;border-radius:9px}
+.hero{text-align:center;padding:6px 0 6px}
+.hero h1{font:600 26px/1.2 Georgia,"Times New Roman",serif;margin:4px 0}
+.hero p{color:var(--mut);margin:4px 0 0}
+.steps{display:flex;gap:4px;margin:16px 0 14px}
+.steps i{flex:1;height:5px;border-radius:3px;background:var(--line)}
+.steps i.on{background:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 12px}
+h2{font:600 20px/1.25 Georgia,serif;margin:0 0 4px}
+h3{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--acc);margin:16px 0 8px}
+[dir=rtl] h3,[dir=rtl] .tagline{letter-spacing:0}
+.sub{color:var(--mut);font-size:13.5px;margin:0 0 12px}
+label.f{display:block;font-size:13px;color:var(--mut);margin:10px 0 4px}
+input[type=text],input[type=date],select,textarea{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:10px;background:#fff;font:inherit;color:inherit}
+textarea{min-height:64px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.opt{border:1.5px solid var(--line);border-radius:12px;padding:12px;background:#fff;cursor:pointer;text-align:start;font:inherit;color:inherit}
+.opt b{display:block;font-size:15px}.opt span{font-size:12.5px;color:var(--mut)}
+.opt.on{border-color:var(--acc);background:#fdf3e8}
+.seg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.seg button{flex:1;border:0;background:none;padding:9px 6px;font:inherit;color:var(--mut);cursor:pointer}
+.seg button.on{background:var(--acc);color:#fff}
+.chk{display:flex;gap:10px;align-items:flex-start;padding:9px 2px;border-bottom:1px solid #f0e8da;cursor:pointer}
+.chk:last-child{border-bottom:0}
+.chk input{width:20px;height:20px;accent-color:var(--acc);margin:1px 0 0;flex:none}
+.chk b{font-weight:600}.chk small{display:block;color:var(--mut);font-size:12.5px}
+.chk .pp{margin-inline-start:auto;color:var(--mut);font-size:12px;white-space:nowrap;padding-inline-start:8px}
+.btn{border:0;border-radius:11px;padding:12px 16px;font:600 15px/1 inherit;font-family:inherit;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.p{background:var(--acc);color:#fff}.btn.s{background:#efe5d6;color:var(--ink)}.btn.g{background:#25d366;color:#fff}
+.mini{border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 10px;font:inherit;font-size:13px;cursor:pointer;color:var(--ink);display:inline-block}
+.item{border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0;background:#fffaf2}
+.item .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+.x{border:0;background:none;color:var(--mut);font-size:20px;cursor:pointer;line-height:1}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 11px;font:inherit;font-size:13px;cursor:pointer;color:var(--ink)}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.ph{display:flex;align-items:center;gap:10px}
+.ph img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--acc2)}
+.ph .em{width:56px;height:56px;border-radius:50%;border:2px dashed var(--acc2);display:grid;place-items:center;color:var(--acc2);font-size:22px;flex:none}
+.ph small{color:var(--mut);font-size:12.5px;display:block}
+.cb{display:flex;gap:12px;align-items:flex-start;margin-top:10px}
+.cprev{width:92px;height:auto;flex:none;background:#fdf6ec;border-radius:12px;border:1px solid var(--line)}
+.cb details{flex:1;min-width:0}.cb summary{cursor:pointer;color:var(--acc);font-weight:600;font-size:14px;padding:4px 0}
+.ol{font-size:12.5px;color:var(--mut);margin:8px 0 4px}
+.os{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:thin}
+.sw{width:30px;height:30px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);flex:none;cursor:pointer;padding:0}
+.sw.on{box-shadow:0 0 0 2.5px var(--acc)}
+.th{width:50px;height:50px;border-radius:10px;border:1.5px solid var(--line);background:#fff;flex:none;cursor:pointer;padding:1px}
+.th.on{border-color:var(--acc);background:#fdf3e8}.th img{width:100%;height:100%;display:block}
+.bar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,253,248,.97);border-top:1px solid var(--line);backdrop-filter:blur(6px);z-index:5}
+.bar .in{max-width:640px;margin:0 auto;padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px}
+.price{flex:1;min-width:0}
+.price b{font:700 22px/1 Georgia,serif;display:block}
+.price small{color:var(--mut);font-size:12px}
+.bump{animation:bump .35s}
+@keyframes bump{50%{transform:scale(1.08);color:var(--acc)}}
+.err{color:#b4462f;font-size:13px;margin-top:8px}
+.note{background:#fdf3e8;border:1px dashed var(--acc2);border-radius:12px;padding:10px 12px;font-size:13.5px;margin:10px 0}
+.done{border-color:#25d366;background:#f1fbf4}
+table.sum{width:100%;border-collapse:collapse;font-size:14px}
+table.sum td{padding:6px 0;border-bottom:1px solid #f0e8da;vertical-align:top}
+table.sum td:last-child{text-align:end;padding-inline-start:10px}
+table.sum tr.t td{font-weight:700;font-size:16px;border-bottom:0;padding-top:10px}
+.hide{display:none!important}
+.tagline{display:inline-block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar" style="justify-content:space-between;align-items:center"><a id="home" href="../" style="color:var(--mut);font-size:14px;text-decoration:none;visibility:hidden">‹ <span id="homeT"></span></a><select id="ui" aria-label="Language"></select></div>
+  <div class="hero">
+    <span class="tagline" id="hTag"></span>
+    <h1 id="hH1"></h1>
+    <p id="hP"></p>
+  </div>
+  <div class="steps" id="steps"></div>
+  <div id="view"></div>
+</div>
+<div class="bar"><div class="in">
+  <div class="price"><b id="pTotal">0</b><small id="pInfo"></small></div>
+  <button class="btn s" id="back"></button>
+  <button class="btn p" id="next"></button>
+</div></div>
+
+<script>
+/* ================= SETTINGS (edit these) ================= */
+const SHOP={
+  whatsapp:"201229307474",            // your number with country code, digits only, e.g. "201001234567"
+  currency:"EGP",
+  coverAndBinding:300,    // fixed price for cover, binding and handling
+  perSheet:18,            // price per printed sheet (2 pages, double-sided)
+  minimum:900,            // the total never goes below this
+  roundTo:10,             // round the journal price to the nearest 10
+  photoUpload:"https://script.google.com/macros/s/AKfycbyEiBGzV8TINkddGIX6SLsFmf5lM16b8DYdzGcT8c1sv89vyokYH625Gwa2fmIAo-k1-A/exec",         // address of the Google Drive photo receiver (relay/drive-photos.gs). Empty = photo upload hidden
+  photoApi:"",            // address of the photo relay (see relay/photo-relay.js). Empty = photo button hidden
+  addons:[                // change a price here, delete a line to remove it
+    {id:"wrap",label:"Gift wrapping",desc:"",price:100}
+  ]
+};
+/* ========================================================= */
+
+const DATA={"L":{"en":{"g":{"fp_glance":["Year at a glance","Special days are marked with their occasion icon. Circle any other dates you want to remember."],"fp_countdown":["Countdown","Colour one icon every day. The number shows how many days are left."],"trackers":["Year trackers","Pick a colour for each option in the key. Fill one square per day. Each column is a month, each row a day."],"mp_cover":["Month cover","Colour it in and doodle your plans for the month."],"mp_cal":["Calendar","Write plans in the boxes, goals on the left, notes on the right. Special days are already marked."],"mp_habits":["Wheel of habits","Write up to 8 habits (ring 1 is the inner ring). Colour a segment each day you do it and choose a reward."],"mp_mood":["Mood tracker","Colour each day's icon with the colour of your mood from the key."],"mp_sleep":["Sleep tracker","Shade the hours you slept each night, from evening to morning."],"mp_coffee":["Coffee tracker","Colour each day's segment with the colour for how many cups you had."],"mp_self":["Self-care","Tick a box each day you did one of the 8 habits listed at the top."],"mp_doodle":["Doodle of the day","Draw one small thing that sums up your day."],"mp_grat":["Gratitude journal","Write one thing you are grateful for, every day."],"mp_high":["Highlight of the day","Write the best moment of each day in one line."],"mp_movies":["Movies watched","Write the title in a frame and colour the stars to rate it."],"mp_series":["Series tracker","One row per season. Tick each episode as you watch it."],"mp_play":["Playlist","Your songs of the month. Draw or stick the album cover in the square."],"mp_notes":["Notes","Free space for anything."],"sp_letter":["Letter","Written for you. Open it on the day."],"sp_recap":["Recap","After the big day, add a photo and answer the prompts."],"sp_review":["Year in review","Fill it in on the last day of your journal."],"op_wish":["Birthday wishlist","In each birthday month: the gifts and experiences they would love."],"op_check":["Checklist","Tick each item when it is done."],"op_vows":["Our vows","Each of you writes your promises in your own column."],"op_story":["The proposal","Tell the story with the prompts and add a photo of the ring."],"op_reasons":["Reasons I love you","Write one reason in each heart, whenever you think of one."],"op_then":["Then & now","Add an old photo and a new one, then write how you have grown."],"op_thanks":["People to thank","Name the people who helped you get here, and why."],"op_next":["My next chapter","Write a goal at each milestone, ending with your big dream."],"op_resol":["Resolutions","One small goal per month. Tick the box when you reach it."],"op_family":["Our family","A portrait of everyone. Fill in each person's favourites."],"op_bucket":["Family bucket list","Things to do together. Tick them off as you go."],"op_growth":["Growth chart","Measure each child every month and write their height."],"mp_chores":["Chore chart","Each child ticks a box for every chore done that day."],"op_bres":["Birthday resolutions","In each birthday month: goals for the new age."]},"tr":{"tr_rate":["Rate My Day",["5 stars","4 stars","3 stars","2 stars","1 star"]],"tr_read":["Reading Tracker",["0-20 pages","21-40 pages","41-60 pages","61-80 pages","81-100 pages","100+ pages"]],"tr_stress":["Stress Tracker",["none","low","medium","high","severe"]],"tr_dream":["Dream Tracker",["scary","sad","funny / weird","happy","romantic","can't remember"]],"tr_weather":["Weather Tracker",["sunny","partly cloudy","cloudy","windy","dusty / hazy","rainy","stormy"]],"tr_temp":["Temperature Log",["40°C +","35 - 39°C","30 - 34°C","25 - 29°C","20 - 24°C","15 - 19°C","10 - 14°C","below 10°C"]],"tr_water":["Water Intake",["8+ glasses","6-7 glasses","4-5 glasses","2-3 glasses","0-1 glass"]],"tr_workout":["Workout Tracker",["cardio","strength","yoga / stretching","walk","sport","rest day"]],"tr_screen":["Screen Time",["under 1h","1-2h","2-4h","4-6h","6h +"]],"tr_meditate":["Meditation",["20+ min","10-20 min","5-10 min","under 5 min","skipped"]],"tr_study":["Study Tracker",["4h +","3h","2h","1h","none"]],"tr_spend":["Spending Tracker",["no-spend day","under budget","on budget","over budget","treat day"]],"tr_skin":["Skincare",["full routine","morning only","night only","skipped"]],"tr_energy":["Energy Level",["superpowered","good","okay","tired","exhausted"]],"tr_date":["Date Nights",["date night","quality time at home","call / video date","apart","no time"]],"tr_faith":["Spiritual Practice",["all done","most","some","missed"]],"tr_deeds":["Good Deeds",["helped at home","kind to others","shared","listened","tried something new"]],"tr_cycle":["Cycle Tracker",["period","light","spotting","PMS","ovulation"]]},"occ":{"birthday":"birthday","wedding":"wedding","anniversary":"anniversary","engagement":"engagement","graduation":"graduation","other":"special day","family":"family day"}},"ar":{"g":{"fp_glance":["السنة في لمحة","الأيام المميزة متعلّمة بأيقونة مناسبتها. علّم أي تواريخ تانية مهمة ليك."],"fp_countdown":["العد التنازلي","لوّن أيقونة كل يوم. الرقم بيقول فاضل كام يوم."],"trackers":["متتبعات السنة","اختار لون لكل اختيار في المفتاح، ولوّن مربع واحد لكل يوم. كل عمود شهر وكل صف يوم."],"mp_cover":["غلاف الشهر","لوّنه وارسم خططك للشهر."],"mp_cal":["التقويم","اكتب خططك في المربعات، والأهداف والملاحظات تحت. الأيام المميزة متعلّمة."],"mp_habits":["عجلة العادات","اكتب لحد 8 عادات (الحلقة 1 هي الداخلية). لوّن جزء كل يوم تعمل فيه العادة واختار مكافأة."],"mp_mood":["متتبع المزاج","لوّن أيقونة كل يوم بلون مزاجك من المفتاح."],"mp_sleep":["متتبع النوم","ظلّل الساعات اللي نمتها كل ليلة."],"mp_coffee":["متتبع القهوة","لوّن جزء كل يوم بلون عدد الأكواب."],"mp_self":["العناية بالنفس","علّم مربع كل يوم عملت فيه عادة من الـ 8 اللي فوق."],"mp_doodle":["رسمة اليوم","ارسم حاجة صغيرة تلخّص يومك."],"mp_grat":["يوميات الامتنان","اكتب حاجة واحدة ممتن ليها كل يوم."],"mp_high":["أجمل لحظة في اليوم","اكتب أحلى لحظة في كل يوم في سطر."],"mp_movies":["أفلام شاهدتها","اكتب اسم الفيلم ولوّن النجوم لتقييمه."],"mp_series":["متتبع المسلسلات","صف لكل موسم. علّم كل حلقة تشوفها."],"mp_play":["قائمة الأغاني","أغاني الشهر. ارسم أو الزق غلاف الألبوم في المربع."],"mp_notes":["ملاحظات","مساحة حرة لأي حاجة."],"sp_letter":["الجواب","مكتوب ليك. افتحه في اليوم المحدد."],"sp_recap":["الذكرى","بعد اليوم الكبير، حط صورة وجاوب على الأسئلة."],"sp_review":["حصاد السنة","املاه في آخر يوم في اليوميات."],"op_wish":["قائمة الأمنيات","في شهر كل عيد ميلاد: الهدايا والتجارب اللي نفسه فيها."],"op_check":["قائمة التجهيزات","علّم كل بند لما يخلص."],"op_vows":["عهودنا","كل واحد يكتب وعوده في العمود بتاعه."],"op_story":["طلب الإيد","احكي القصة بالأسئلة وحط صورة الخاتم."],"op_reasons":["أسباب الحب","اكتب سبب في كل قلب كل ما تفتكر واحد."],"op_then":["زمان ودلوقتي","حط صورة قديمة وصورة جديدة واكتب اتغيرتوا إزاي."],"op_thanks":["ناس أشكرهم","اكتب أسماء اللي ساعدوك توصل، وليه."],"op_next":["فصلي الجاي","اكتب هدف عند كل محطة لحد حلمك الكبير."],"op_resol":["القرارات","هدف صغير لكل شهر. علّم المربع لما تحققه."],"op_family":["عيلتنا","صورة لكل العيلة. اكتبوا المفضلات لكل واحد."],"op_bucket":["قائمة أحلام العيلة","حاجات نعملها سوا. علّموا عليها لما تخلص."],"op_growth":["مقياس الطول","قيسوا كل طفل كل شهر واكتبوا طوله."],"mp_chores":["جدول المهام","كل طفل يعلّم مربع لكل مهمة خلصها في اليوم."],"op_bres":["قرارات عيد الميلاد","في شهر كل عيد ميلاد: أهداف للسنة الجديدة."]},"tr":{"tr_rate":["تقييم يومي",["5 نجوم","4 نجوم","3 نجوم","نجمتان","نجمة واحدة"]],"tr_read":["متتبع القراءة",["0-20 صفحة","21-40 صفحة","41-60 صفحة","61-80 صفحة","81-100 صفحة","100+ صفحة"]],"tr_stress":["متتبع التوتر",["لا يوجد","منخفض","متوسط","مرتفع","شديد"]],"tr_dream":["متتبع الأحلام",["مخيف","حزين","مضحك / غريب","سعيد","رومانسي","لا أتذكر"]],"tr_weather":["متتبع الطقس",["مشمس","غائم جزئيًا","غائم","عاصف","مغبر","ممطر","عاصفة"]],"tr_temp":["سجل الحرارة",["40°C +","35 - 39°C","30 - 34°C","25 - 29°C","20 - 24°C","15 - 19°C","10 - 14°C","أقل من 10°C"]],"tr_water":["شرب المية",["8+ كوبايات","6-7 كوبايات","4-5 كوبايات","2-3 كوبايات","0-1 كوباية"]],"tr_workout":["متتبع الرياضة",["كارديو","قوة","يوجا / إطالة","مشي","رياضة","يوم راحة"]],"tr_screen":["وقت الشاشة",["أقل من ساعة","1-2 ساعة","2-4 ساعات","4-6 ساعات","6 ساعات +"]],"tr_meditate":["التأمل",["20+ دقيقة","10-20 دقيقة","5-10 دقايق","أقل من 5","فوّتّه"]],"tr_study":["متتبع المذاكرة",["4 ساعات +","3 ساعات","ساعتين","ساعة","مفيش"]],"tr_spend":["متتبع المصاريف",["يوم من غير صرف","أقل من الميزانية","في الميزانية","فوق الميزانية","يوم دلع"]],"tr_skin":["العناية بالبشرة",["الروتين كامل","الصبح بس","بالليل بس","فوّته"]],"tr_energy":["مستوى الطاقة",["خارق","كويس","عادي","تعبان","مُنهَك"]],"tr_date":["خروجاتنا",["خروجة","وقت حلو في البيت","مكالمة / فيديو","بعيد عن بعض","مفيش وقت"]],"tr_faith":["العبادات",["كلها","معظمها","بعضها","فاتتني"]],"tr_deeds":["الأعمال الطيبة",["ساعدت في البيت","كنت لطيف مع غيري","شاركت","سمعت الكلام","جربت حاجة جديدة"]],"tr_cycle":["متتبع الدورة",["الدورة","خفيفة","تنقيط","أعراض ما قبل الدورة","التبويض"]]},"occ":{"birthday":"عيد ميلاد","wedding":"فرح","anniversary":"ذكرى","engagement":"خطوبة","graduation":"تخرج","other":"يوم مميز","family":"يوم عائلي"}},"fr":{"g":{"fp_glance":["L'année en un coup d'œil","Les jours spéciaux portent l'icône de leur occasion. Entoure les autres dates importantes."],"fp_countdown":["Compte à rebours","Colorie une icône chaque jour. Le chiffre indique les jours restants."],"trackers":["Suivis de l'année","Choisis une couleur par option de la légende. Remplis une case par jour. Chaque colonne est un mois."],"mp_cover":["Couverture du mois","Colorie-la et dessine tes projets du mois."],"mp_cal":["Calendrier","Note tes projets dans les cases, objectifs à gauche, notes à droite."],"mp_habits":["Roue des habitudes","Écris jusqu'à 8 habitudes (l'anneau 1 est à l'intérieur). Colorie un segment chaque jour réussi et choisis une récompense."],"mp_mood":["Suivi d'humeur","Colorie l'icône du jour avec la couleur de ton humeur."],"mp_sleep":["Suivi du sommeil","Grise les heures dormies chaque nuit."],"mp_coffee":["Suivi café","Colorie le segment du jour selon le nombre de tasses."],"mp_self":["Prendre soin de soi","Coche une case chaque jour où tu as suivi une des 8 habitudes."],"mp_doodle":["Dessin du jour","Dessine une petite chose qui résume ta journée."],"mp_grat":["Journal de gratitude","Écris une chose pour laquelle tu es reconnaissant(e), chaque jour."],"mp_high":["Le meilleur du jour","Le plus beau moment de chaque jour, en une ligne."],"mp_movies":["Films vus","Écris le titre et colorie les étoiles pour le noter."],"mp_series":["Suivi des séries","Une ligne par saison. Coche chaque épisode vu."],"mp_play":["Playlist","Tes chansons du mois. Dessine ou colle la pochette."],"mp_notes":["Notes","Espace libre pour tout."],"sp_letter":["Lettre","Écrite pour toi. À ouvrir le jour J."],"sp_recap":["Souvenir","Après le grand jour, ajoute une photo et réponds aux questions."],"sp_review":["Bilan de l'année","À remplir le dernier jour du journal."],"op_wish":["Liste d'anniversaire","Dans chaque mois d'anniversaire : les cadeaux et expériences rêvés."],"op_check":["Checklist","Coche chaque élément terminé."],"op_vows":["Nos vœux","Chacun écrit ses promesses dans sa colonne."],"op_story":["La demande","Raconte l'histoire avec les questions et ajoute une photo de la bague."],"op_reasons":["Pourquoi je t'aime","Une raison par cœur, dès qu'elle te vient."],"op_then":["Avant & maintenant","Une photo d'avant, une d'aujourd'hui, et comment vous avez grandi."],"op_thanks":["Merci à...","Les personnes qui t'ont aidé(e), et pourquoi."],"op_next":["Mon prochain chapitre","Un objectif à chaque étape, jusqu'à ton grand rêve."],"op_resol":["Résolutions","Un petit objectif par mois. Coche quand c'est fait."],"op_family":["Notre famille","Un portrait de tout le monde. Notez les préférences de chacun."],"op_bucket":["Nos rêves en famille","À faire ensemble. Cochez au fur et à mesure."],"op_growth":["Courbe de croissance","Mesurez chaque enfant chaque mois et notez sa taille."],"mp_chores":["Tableau des tâches","Chaque enfant coche une case par tâche faite dans la journée."],"op_bres":["Résolutions d'anniversaire","Dans chaque mois d'anniversaire : les objectifs du nouvel âge."]},"tr":{"tr_rate":["Note ma journée",["5 étoiles","4 étoiles","3 étoiles","2 étoiles","1 étoile"]],"tr_read":["Suivi de lecture",["0-20 pages","21-40 pages","41-60 pages","61-80 pages","81-100 pages","100+ pages"]],"tr_stress":["Suivi du stress",["aucun","faible","moyen","élevé","sévère"]],"tr_dream":["Suivi des rêves",["effrayant","triste","drôle / bizarre","heureux","romantique","je ne sais plus"]],"tr_weather":["Suivi météo",["ensoleillé","partiellement nuageux","nuageux","venteux","poussière / brume","pluvieux","orageux"]],"tr_temp":["Relevé des températures",["40°C +","35 - 39°C","30 - 34°C","25 - 29°C","20 - 24°C","15 - 19°C","10 - 14°C","moins de 10°C"]],"tr_water":["Hydratation",["8+ verres","6-7 verres","4-5 verres","2-3 verres","0-1 verre"]],"tr_workout":["Suivi sport",["cardio","renforcement","yoga / étirements","marche","sport","repos"]],"tr_screen":["Temps d'écran",["moins d'1h","1-2h","2-4h","4-6h","6h +"]],"tr_meditate":["Méditation",["20+ min","10-20 min","5-10 min","moins de 5 min","sautée"]],"tr_study":["Suivi des révisions",["4h +","3h","2h","1h","rien"]],"tr_spend":["Suivi des dépenses",["zéro dépense","sous le budget","dans le budget","hors budget","jour plaisir"]],"tr_skin":["Soin de la peau",["routine complète","matin seulement","soir seulement","sautée"]],"tr_energy":["Niveau d'énergie",["super-pouvoirs","bon","moyen","fatigué","épuisé"]],"tr_date":["Nos rendez-vous",["sortie en amoureux","moment à la maison","appel / visio","séparés","pas le temps"]],"tr_faith":["Pratique spirituelle",["tout fait","presque tout","un peu","manqué"]],"tr_deeds":["Bonnes actions",["aidé à la maison","gentil avec les autres","partagé","écouté","essayé du nouveau"]],"tr_cycle":["Suivi du cycle",["règles","flux léger","spotting","SPM","ovulation"]]},"occ":{"birthday":"anniversaire","wedding":"mariage","anniversary":"anniversaire de couple","engagement":"fiançailles","graduation":"diplôme","other":"jour spécial","family":"journée en famille"}},"es":{"g":{"fp_glance":["El año de un vistazo","Los días especiales llevan el icono de su ocasión. Rodea otras fechas importantes."],"fp_countdown":["Cuenta atrás","Colorea un icono cada día. El número indica los días que faltan."],"trackers":["Registros del año","Elige un color para cada opción de la leyenda. Rellena un cuadro por día. Cada columna es un mes."],"mp_cover":["Portada del mes","Coloréala y dibuja tus planes del mes."],"mp_cal":["Calendario","Anota planes en las casillas, metas a la izquierda y notas a la derecha."],"mp_habits":["Rueda de hábitos","Escribe hasta 8 hábitos (el anillo 1 es el interior). Colorea un segmento cada día que lo cumplas y elige un premio."],"mp_mood":["Estado de ánimo","Colorea el icono del día con el color de tu ánimo."],"mp_sleep":["Horas de sueño","Sombrea las horas que dormiste cada noche."],"mp_coffee":["Café","Colorea el segmento del día según las tazas que tomaste."],"mp_self":["Autocuidado","Marca una casilla cada día que cumpliste uno de los 8 hábitos."],"mp_doodle":["Dibujo del día","Dibuja algo pequeño que resuma tu día."],"mp_grat":["Diario de gratitud","Escribe una cosa que agradeces, cada día."],"mp_high":["Lo mejor del día","El mejor momento de cada día en una línea."],"mp_movies":["Películas vistas","Escribe el título y colorea las estrellas para puntuarla."],"mp_series":["Series","Una fila por temporada. Marca cada episodio visto."],"mp_play":["Playlist","Tus canciones del mes. Dibuja o pega la portada."],"mp_notes":["Notas","Espacio libre para lo que quieras."],"sp_letter":["Carta","Escrita para ti. Ábrela el día indicado."],"sp_recap":["Recuerdo","Después del gran día, añade una foto y responde las preguntas."],"sp_review":["Resumen del año","Rellénalo el último día del diario."],"op_wish":["Lista de cumpleaños","En cada mes de cumpleaños: los regalos y experiencias soñados."],"op_check":["Lista","Marca cada punto cuando esté hecho."],"op_vows":["Nuestros votos","Cada uno escribe sus promesas en su columna."],"op_story":["La pedida","Cuenta la historia con las preguntas y añade una foto del anillo."],"op_reasons":["Razones","Una razón en cada corazón, cuando se te ocurra."],"op_then":["Antes y ahora","Una foto antigua, una actual y cómo habéis crecido."],"op_thanks":["Gracias a...","Las personas que te ayudaron a llegar aquí, y por qué."],"op_next":["Mi próximo capítulo","Una meta en cada etapa, hasta tu gran sueño."],"op_resol":["Propósitos","Una pequeña meta al mes. Marca la casilla al cumplirla."],"op_family":["Nuestra familia","Un retrato de todos. Anotad lo favorito de cada uno."],"op_bucket":["Sueños en familia","Cosas para hacer juntos. Marcadlas al hacerlas."],"op_growth":["Tabla de crecimiento","Medid a cada niño cada mes y anotad su altura."],"mp_chores":["Tabla de tareas","Cada niño marca una casilla por tarea hecha ese día."],"op_bres":["Propósitos de cumpleaños","En cada mes de cumpleaños: metas para la nueva edad."]},"tr":{"tr_rate":["Califica mi día",["5 estrellas","4 estrellas","3 estrellas","2 estrellas","1 estrella"]],"tr_read":["Lectura",["0-20 páginas","21-40 páginas","41-60 páginas","61-80 páginas","81-100 páginas","100+ páginas"]],"tr_stress":["Estrés",["nada","bajo","medio","alto","severo"]],"tr_dream":["Sueños",["de miedo","triste","raro / divertido","feliz","romántico","no lo recuerdo"]],"tr_weather":["Clima",["soleado","parcialmente nublado","nublado","ventoso","polvo / bruma","lluvioso","tormenta"]],"tr_temp":["Temperatura",["40°C +","35 - 39°C","30 - 34°C","25 - 29°C","20 - 24°C","15 - 19°C","10 - 14°C","menos de 10°C"]],"tr_water":["Agua",["8+ vasos","6-7 vasos","4-5 vasos","2-3 vasos","0-1 vaso"]],"tr_workout":["Ejercicio",["cardio","fuerza","yoga / estiramientos","caminar","deporte","descanso"]],"tr_screen":["Tiempo de pantalla",["menos de 1h","1-2h","2-4h","4-6h","6h +"]],"tr_meditate":["Meditación",["20+ min","10-20 min","5-10 min","menos de 5 min","saltada"]],"tr_study":["Estudio",["4h +","3h","2h","1h","nada"]],"tr_spend":["Gastos",["día sin gastar","bajo presupuesto","en presupuesto","sobre presupuesto","día de capricho"]],"tr_skin":["Cuidado de la piel",["rutina completa","solo mañana","solo noche","saltada"]],"tr_energy":["Nivel de energía",["superpoderes","bien","normal","[[cansada|cansado]]","[[agotada|agotado]]"]],"tr_date":["Nuestras citas",["cita","tiempo en casa","llamada / videollamada","separados","sin tiempo"]],"tr_faith":["Práctica espiritual",["todo hecho","casi todo","algo","perdido"]],"tr_deeds":["Buenas acciones",["ayudé en casa","amable con otros","compartí","escuché","probé algo nuevo"]],"tr_cycle":["Ciclo",["periodo","flujo ligero","manchado","SPM","ovulación"]]},"occ":{"birthday":"cumpleaños","wedding":"boda","anniversary":"aniversario","engagement":"compromiso","graduation":"graduación","other":"día especial","family":"día en familia"}},"de":{"g":{"fp_glance":["Das Jahr auf einen Blick","Besondere Tage tragen das Symbol ihres Anlasses. Kreise andere wichtige Daten ein."],"fp_countdown":["Countdown","Male jeden Tag ein Symbol aus. Die Zahl zeigt die verbleibenden Tage."],"trackers":["Jahres-Tracker","Wähle für jede Option der Legende eine Farbe. Fülle pro Tag ein Kästchen. Jede Spalte ist ein Monat."],"mp_cover":["Monatsdeckblatt","Male es aus und skizziere deine Pläne für den Monat."],"mp_cal":["Kalender","Pläne in die Kästchen, Ziele links, Notizen rechts."],"mp_habits":["Gewohnheitsrad","Schreibe bis zu 8 Gewohnheiten (Ring 1 ist innen). Male jeden geschafften Tag ein Feld aus und wähle eine Belohnung."],"mp_mood":["Stimmungs-Tracker","Male das Symbol des Tages in der Farbe deiner Stimmung aus."],"mp_sleep":["Schlaf-Tracker","Schraffiere die Stunden, die du jede Nacht geschlafen hast."],"mp_coffee":["Kaffee-Tracker","Male das Feld des Tages nach Anzahl der Tassen aus."],"mp_self":["Selbstfürsorge","Kreuze jeden Tag an, an dem du eine der 8 Gewohnheiten gemacht hast."],"mp_doodle":["Kritzelei des Tages","Zeichne etwas Kleines, das deinen Tag zusammenfasst."],"mp_grat":["Dankbarkeitstagebuch","Schreibe jeden Tag eine Sache auf, für die du dankbar bist."],"mp_high":["Highlight des Tages","Der schönste Moment jedes Tages in einer Zeile."],"mp_movies":["Gesehene Filme","Titel eintragen und Sterne ausmalen, um ihn zu bewerten."],"mp_series":["Serien-Tracker","Eine Zeile pro Staffel. Kreuze jede gesehene Folge an."],"mp_play":["Playlist","Deine Songs des Monats. Zeichne oder klebe das Cover ein."],"mp_notes":["Notizen","Freier Platz für alles."],"sp_letter":["Brief","Für dich geschrieben. Öffne ihn am großen Tag."],"sp_recap":["Rückblick","Nach dem großen Tag ein Foto einkleben und die Fragen beantworten."],"sp_review":["Jahresrückblick","Am letzten Tag des Tagebuchs ausfüllen."],"op_wish":["Wunschliste","In jedem Geburtstagsmonat: die gewünschten Geschenke und Erlebnisse."],"op_check":["Checkliste","Hake jeden erledigten Punkt ab."],"op_vows":["Eheversprechen","Jeder schreibt seine Versprechen in seine Spalte."],"op_story":["Der Antrag","Erzähle die Geschichte mit den Fragen und klebe ein Foto vom Ring ein."],"op_reasons":["Warum ich dich liebe","Ein Grund pro Herz, wann immer dir einer einfällt."],"op_then":["Damals & heute","Ein altes und ein neues Foto, und wie ihr gewachsen seid."],"op_thanks":["Danke an...","Die Menschen, die dir geholfen haben, und warum."],"op_next":["Mein nächstes Kapitel","Ein Ziel pro Etappe, bis zu deinem großen Traum."],"op_resol":["Vorsätze","Ein kleines Ziel pro Monat. Kreuze an, wenn du es erreicht hast."],"op_family":["Unsere Familie","Ein Porträt von allen. Tragt die Lieblingsdinge jedes Einzelnen ein."],"op_bucket":["Familien-Wunschliste","Gemeinsame Pläne. Abhaken, wenn erledigt."],"op_growth":["Wachstumstabelle","Messt jedes Kind jeden Monat und tragt die Größe ein."],"mp_chores":["Aufgabenplan","Jedes Kind kreuzt für jede erledigte Aufgabe ein Kästchen an."],"op_bres":["Geburtstagsvorsätze","In jedem Geburtstagsmonat: Ziele für das neue Lebensjahr."]},"tr":{"tr_rate":["Mein Tag",["5 Sterne","4 Sterne","3 Sterne","2 Sterne","1 Stern"]],"tr_read":["Lese-Tracker",["0-20 Seiten","21-40 Seiten","41-60 Seiten","61-80 Seiten","81-100 Seiten","100+ Seiten"]],"tr_stress":["Stress-Tracker",["keiner","gering","mittel","hoch","stark"]],"tr_dream":["Traum-Tracker",["gruselig","traurig","lustig / seltsam","glücklich","romantisch","weiß nicht mehr"]],"tr_weather":["Wetter-Tracker",["sonnig","teils bewölkt","bewölkt","windig","staubig / diesig","regnerisch","stürmisch"]],"tr_temp":["Temperatur-Log",["40°C +","35 - 39°C","30 - 34°C","25 - 29°C","20 - 24°C","15 - 19°C","10 - 14°C","unter 10°C"]],"tr_water":["Wasser trinken",["8+ Gläser","6-7 Gläser","4-5 Gläser","2-3 Gläser","0-1 Glas"]],"tr_workout":["Sport-Tracker",["Cardio","Kraft","Yoga / Dehnen","Spaziergang","Sport","Ruhetag"]],"tr_screen":["Bildschirmzeit",["unter 1 Std","1-2 Std","2-4 Std","4-6 Std","6 Std +"]],"tr_meditate":["Meditation",["20+ Min","10-20 Min","5-10 Min","unter 5 Min","ausgelassen"]],"tr_study":["Lern-Tracker",["4 Std +","3 Std","2 Std","1 Std","nichts"]],"tr_spend":["Ausgaben",["kein Geld ausgegeben","unter Budget","im Budget","über Budget","Gönn-Tag"]],"tr_skin":["Hautpflege",["volle Routine","nur morgens","nur abends","ausgelassen"]],"tr_energy":["Energielevel",["Superkräfte","gut","okay","müde","erschöpft"]],"tr_date":["Unsere Dates",["Date-Abend","Zeit zu Hause","Anruf / Video","getrennt","keine Zeit"]],"tr_faith":["Spirituelle Praxis",["alles","das meiste","etwas","verpasst"]],"tr_deeds":["Gute Taten",["zu Hause geholfen","nett zu anderen","geteilt","zugehört","Neues probiert"]],"tr_cycle":["Zyklus-Tracker",["Periode","leicht","Schmierblutung","PMS","Eisprung"]]},"occ":{"birthday":"Geburtstag","wedding":"Hochzeit","anniversary":"Jahrestag","engagement":"Verlobung","graduation":"Abschluss","other":"besonderer Tag","family":"Familientag"}}},"core":["tr_rate","tr_read","tr_stress","tr_dream","tr_weather","tr_temp"],"lib":[["tr_water",""],["tr_workout",""],["tr_screen",""],["tr_meditate",""],["tr_study",""],["tr_spend",""],["tr_skin",""],["tr_energy",""],["tr_date",""],["tr_faith",""],["tr_deeds","kids"],["tr_cycle","solo"]]};
+const T={
+en:{phUp:"Uploading...",phSent:"Photo added. It is sent with your order.",phErr:"Could not upload. Choose the photo again.",phWait:"Photos are still uploading. Try again in a moment.",photoTip3:"Add a clear photo of each person, or one photo of everyone. The photos are sent to us with your order so we can make the characters look like them.",home:"Home",usePhoto:"Use a photo",usePhotoHint:"Optional: we read their look from a clear photo. You can still adjust it after.",groupH:"One photo of everyone",groupP2:"Add a photo with everyone in it and we design all the characters from it at once.",photoTip2:"Use a photo or design each character by hand. What you see is exactly how they will appear in the journal. The photo is only used to design the characters and is not sent with the order.",phReading:"Looking at the photo...",phDone:"Done. Check the preview and adjust anything.",phFail:"Could not read the photo. Try a clearer one where the face is visible, or design by hand.",phNo:"Photo reading was not allowed. Design the character by hand.",phBusy:"Busy right now. Try again in a minute.",phGroupDone:"Designed: {n}. Check each preview and adjust anything.",phMiss:"Not found: {n}. Use their own photo or design by hand.",kidsHint:"Up to 3 children, of any age. Each is drawn at their age, grown-ups as adults.",design:"Design their character",skin:"Skin tone",hairStyle:"Hair",hairColor:"Hair colour",hijabColor:"Hijab colour",eyes:"Eye colour",glasses:"Glasses",beard:"Beard",faceShape:"Face shape",photoTip:"Make each character look like them using Design their character. That is exactly how they will appear in the journal. If you'd like us to fine-tune from a photo, you can send one in the WhatsApp chat, but it is optional.",sentH:"Order sent",sentP:"If WhatsApp didn't open, tap the button below. We will reply to confirm the delivery fee, payment and a preview before printing.",s4p2:"Pages are printed two per sheet, so the price changes with every second page.",delivH:"Delivery",delivNote:"Where should we deliver the journal? The delivery fee and payment are confirmed with you on WhatsApp.",phone:"Phone number",city:"City and area",address:"Full address (street, building, floor, apartment)",plusDeliv:"Delivery fee not included.",day:"Day",month:"Month",newOrder:"Start a new order",outRange:"A date here is outside the journal's dates, so it will not appear in it. Change the date, the start or the length.",e_buyer:"Add your name.",e_phone:"Add a phone number we can reach you on.",e_addr:"Add the city and the full delivery address.",tag:"Personalised journal",h1:"Design a journal made just for them",hp:"A year of trackers, calendars and pages, with illustrated characters of the people you love.",
+back:"Back",next:"Next",send:"Send order",
+s1h:"What's the occasion?",s1p:"This sets the theme and the special pages. You can change everything later.",
+ev_birthday:"Birthday",evd_birthday:"A year until the next birthday",ev_wedding:"Wedding",evd_wedding:"Countdown to the big day",ev_engagement:"Engagement",evd_engagement:"From yes to I do",
+ev_anniversary:"Anniversary",evd_anniversary:"Another year together",ev_graduation:"Graduation",evd_graduation:"For the graduate",ev_family:"Family year",evd_family:"For the whole family",
+ev_newyear:"New year",evd_newyear:"January to December",ev_custom:"Something else",evd_custom:"Any occasion",
+s2h:"Who is it for?",s2p:"Everyone here becomes an illustrated character in the journal.",
+mainP:"The journal is for",name:"Their name",namePh:"Name",female:"Female",male:"Male",girl:"Girl",boy:"Boy",
+bday:"Birthday (optional, adds birthday pages in that month)",birthday:"Birthday",
+whoElse:"Who else is in it?",withP:"With a partner",just:"Just them",partner:"Partner",
+kidsOn:"Include children",famName:"Family name (optional)",child:"Child",addKid:"+ Add a child",
+photo:"Photo",photoHint:"A clear photo of the face. We draw the character from it.",addPhoto:"Add photo",changePhoto:"Change photo",
+groupP:"If you have a photo with everyone in it, add it here.",
+pers:"Personality (pick up to 3)",persNote:"More about them: hobbies, catchphrases, inside jokes",persHint:"We use this to write the speech bubbles in their voice.",
+tr_funny:"Funny",tr_sarcastic:"Sarcastic",tr_romantic:"Romantic",tr_calm:"Calm",tr_energetic:"Energetic",tr_shy:"Shy",tr_dramatic:"Dramatic",tr_organized:"Organised",
+tr_messy:"Messy",tr_foodie:"Foodie",tr_coffee:"Coffee lover",tr_sleepy:"Always sleepy",tr_sporty:"Sporty",tr_bookworm:"Bookworm",tr_gamer:"Gamer",tr_creative:"Creative",
+s3h:"The dates",s3p:"The journal can start on any day, for example the day you give it.",start:"Journal starts on",length:"Length",months:"months",
+key_birthday:"Their birthday",key_wedding:"Wedding date",key_engagement:"Wedding date (or engagement date)",key_anniversary:"Anniversary date",key_graduation:"Graduation date",
+spH:"Other special dates",spP:"Each one is marked on the calendars and gets its own pages in its month.",spN:"Special date",spAdd:"+ Add a special date",spWhat:"What is it?",spPh:"e.g. Mum's birthday, our first date",
+s4h:"Choose the pages",s4p:"Untick anything they won't use. The price updates as you go.",front:"Front pages",monthly:"Every month",occP:"Occasion pages",occPp:"Placed in the month each occasion happens.",
+last:"Last page",about:"about",dates:"dates",
+fp_belongs:"Belongs-to page",fpd_belongs:"A first page with their name and characters.",fp_guide:"How to use this journal",fpd_guide:"One page that explains every page.",
+s5h:"Year trackers",s5p:"Each tracker is one page for the whole year: colour one square a day. Pick as many as you like, or none.",onePage:"1 page",
+own:"Your own trackers",ownP:"Track anything else, up to 4.",myTr:"My tracker",trPh:"What to track, e.g. Steps",trOpt:"Options, one per line (up to 8)",trAdd:"+ Add my own tracker",
+s6h:"Last details",jlang:"Journal language",week:"Weeks start on",sun:"Sunday",mon:"Monday",sat:"Saturday",extras:"Extras",
+yourName:"Your name",yourNamePh:"So we know who is ordering",notes:"Anything else we should know? (optional)",
+orderH:"Your order",occasion:"Occasion",characters:"Characters",datesL:"Dates",specials:"Special dates",none:"none",journal:"Journal",pages:"pages",total:"Total",photos:"Photos",to:"to",
+sendNote:"Tap Send order to send it to us on WhatsApp. We will confirm and show you a preview before printing.",
+openWa:"Open WhatsApp",step2H:"One more step: send the photos",step2P:"Your order is in WhatsApp. Now send the photos in the same chat.",sharePhotos:"Send the photos",
+shareFail:"Open our WhatsApp chat and attach the photos there.",photosLater:"No photos added. You can send them to us in the WhatsApp chat.",
+copy:"Copy order",copied:"Copied. Paste it in a message to us.",
+e_event:"Choose an occasion first.",e_owner:"Add the name of the person it is for.",e_partner:"Add the partner's name, or switch to Just them.",e_kid:"Add a name for each child, or remove the empty one.",
+e_start:"Pick the start date.",e_key:"Add the main date of the occasion.",e_bday:"Add their birthday."},
+
+ar:{phUp:"جاري الرفع...",phSent:"الصورة اتضافت وهتتبعت مع الطلب.",phErr:"الرفع فشل. اختار الصورة تاني.",phWait:"الصور لسه بتترفع. جرّب تاني بعد لحظة.",photoTip3:"ضيف صورة واضحة لكل شخص، أو صورة واحدة للكل. الصور بتتبعت لنا مع طلبك عشان نخلّي الشخصيات شبههم.",home:"الرئيسية",usePhoto:"استخدم صورة",usePhotoHint:"اختياري: بنقرا شكلهم من صورة واضحة. تقدر تعدّل بعدها.",groupH:"صورة واحدة للكل",groupP2:"ضيف صورة فيها الكل وهنصمّم كل الشخصيات منها مرة واحدة.",photoTip2:"استخدم صورة أو صمّم كل شخصية بإيدك. اللي بتشوفه هو بالظبط شكلهم في الجورنال. الصورة بتتستخدم بس لتصميم الشخصيات ومش بتتبعت مع الطلب.",phReading:"بنبص على الصورة...",phDone:"تمام. بص على الشكل وعدّل اللي محتاجه.",phFail:"مقدرناش نقرا الصورة. جرّب صورة أوضح الوش باين فيها، أو صمّم بإيدك.",phNo:"قراءة الصورة مش مسموحة. صمّم الشخصية بإيدك.",phBusy:"مشغول دلوقتي. جرّب كمان دقيقة.",phGroupDone:"اتصمّم: {n}. بص على كل شخصية وعدّل اللي محتاجه.",phMiss:"مش لاقيين: {n}. استخدم صورتهم لوحدهم أو صمّم بإيدك.",kidsHint:"لحد 3 أولاد من أي سن. كل واحد بيترسم على سنّه، والكبار بيترسموا كبار.",design:"صمّم الشخصية",skin:"لون البشرة",hairStyle:"الشعر",hairColor:"لون الشعر",hijabColor:"لون الحجاب",eyes:"لون العينين",glasses:"النضارة",beard:"الدقن",faceShape:"شكل الوش",photoTip:"خلّي كل شخصية شبههم من «صمّم الشخصية». بالظبط كده هتظهر في الجورنال. لو حابب نظبطها من صورة، تقدر تبعتها في شات الواتساب، بس ده اختياري.",sentH:"الطلب اتبعت",sentP:"لو الواتساب ما فتحش، اضغط الزرار تحت. هنرد عليك نأكد مصاريف التوصيل والدفع ونبعتلك معاينة قبل الطباعة.",s4p2:"الصفحات بتتطبع اتنين في كل ورقة، فالسعر بيتغير مع كل صفحتين.",delivH:"التوصيل",delivNote:"نوصّل الجورنال فين؟ مصاريف التوصيل وطريقة الدفع بنأكدهم معاك على واتساب.",phone:"رقم الموبايل",city:"المدينة والمنطقة",address:"العنوان بالتفصيل (الشارع، العمارة، الدور، الشقة)",plusDeliv:"السعر غير شامل التوصيل.",day:"اليوم",month:"الشهر",newOrder:"ابدأ طلب جديد",outRange:"فيه تاريخ هنا بره مدة الجورنال، فمش هيظهر فيه. غيّر التاريخ أو البداية أو المدة.",e_buyer:"اكتب اسمك.",e_phone:"اكتب رقم موبايل نقدر نوصلك عليه.",e_addr:"اكتب المدينة وعنوان التوصيل بالتفصيل.",tag:"جورنال مخصوص",h1:"صمّم جورنال معمول مخصوص ليهم",hp:"سنة كاملة من المتتبعات والتقويمات والصفحات، بشخصيات مرسومة للناس اللي بتحبهم.",
+back:"رجوع",next:"التالي",send:"ابعت الطلب",
+s1h:"إيه المناسبة؟",s1p:"دي بتحدد شكل الجورنال والصفحات الخاصة. تقدر تغيّر أي حاجة بعدين.",
+ev_birthday:"عيد ميلاد",evd_birthday:"سنة لحد عيد الميلاد الجاي",ev_wedding:"فرح",evd_wedding:"عدّ تنازلي لليوم الكبير",ev_engagement:"خطوبة",evd_engagement:"من الخطوبة للفرح",
+ev_anniversary:"ذكرى سنوية",evd_anniversary:"سنة كمان مع بعض",ev_graduation:"تخرج",evd_graduation:"للخريج أو الخريجة",ev_family:"سنة العيلة",evd_family:"للعيلة كلها",
+ev_newyear:"سنة جديدة",evd_newyear:"من يناير لديسمبر",ev_custom:"حاجة تانية",evd_custom:"أي مناسبة",
+s2h:"الجورنال لمين؟",s2p:"كل شخص هنا هيبقى شخصية مرسومة جوه الجورنال.",
+mainP:"صاحب الجورنال",name:"الاسم",namePh:"الاسم",female:"أنثى",male:"ذكر",girl:"بنت",boy:"ولد",
+bday:"عيد الميلاد (اختياري، بيضيف صفحات عيد ميلاد في الشهر ده)",birthday:"عيد الميلاد",
+whoElse:"مين كمان في الجورنال؟",withP:"مع شريك",just:"لوحده",partner:"الشريك",
+kidsOn:"إضافة أطفال",famName:"اسم العيلة (اختياري)",child:"طفل",addKid:"+ إضافة طفل",
+photo:"صورة",photoHint:"صورة واضحة للوش. هنرسم الشخصية منها.",addPhoto:"أضف صورة",changePhoto:"غيّر الصورة",
+groupP:"لو عندك صورة فيها الكل، ضيفها هنا.",
+pers:"الشخصية (اختار لحد 3)",persNote:"معلومات أكتر: هوايات، كلام بيقوله دايمًا، نكت خاصة",persHint:"بنستخدم ده عشان نكتب الكلام على لسانهم.",
+tr_funny:"دمه خفيف",tr_sarcastic:"ساخر",tr_romantic:"رومانسي",tr_calm:"هادي",tr_energetic:"نشيط",tr_shy:"خجول",tr_dramatic:"درامي",tr_organized:"منظم",
+tr_messy:"فوضوي",tr_foodie:"بيحب الأكل",tr_coffee:"عاشق قهوة",tr_sleepy:"دايمًا نعسان",tr_sporty:"رياضي",tr_bookworm:"بيحب القراءة",tr_gamer:"جيمر",tr_creative:"مبدع",
+s3h:"التواريخ",s3p:"الجورنال ممكن يبدأ في أي يوم، مثلًا يوم ما تهديه.",start:"الجورنال يبدأ يوم",length:"المدة",months:"شهور",
+key_birthday:"عيد ميلاده",key_wedding:"تاريخ الفرح",key_engagement:"تاريخ الفرح (أو الخطوبة)",key_anniversary:"تاريخ الذكرى",key_graduation:"تاريخ التخرج",
+spH:"تواريخ مميزة تانية",spP:"كل تاريخ بيتعلّم على التقويم وبياخد صفحاته في شهره.",spN:"تاريخ مميز",spAdd:"+ إضافة تاريخ مميز",spWhat:"إيه المناسبة؟",spPh:"مثلًا عيد ميلاد ماما، أول خروجة لينا",
+s4h:"اختار الصفحات",s4p:"شيل علامة أي صفحة مش هتتستخدم. السعر بيتحدّث مع كل اختيار.",front:"الصفحات الأولى",monthly:"كل شهر",occP:"صفحات المناسبات",occPp:"بتتحط في شهر كل مناسبة.",
+last:"آخر صفحة",about:"حوالي",dates:"تواريخ",
+fp_belongs:"صفحة «الجورنال ده بتاع»",fpd_belongs:"أول صفحة بالاسم والشخصيات.",fp_guide:"إزاي تستخدم الجورنال",fpd_guide:"صفحة واحدة بتشرح كل الصفحات.",
+s5h:"متتبعات السنة",s5p:"كل متتبع صفحة واحدة للسنة كلها: لوّن مربع كل يوم. اختار اللي يعجبك، أو ما تختارش.",onePage:"صفحة واحدة",
+own:"متتبعات من عندك",ownP:"تابع أي حاجة تانية، لحد 4.",myTr:"المتتبع بتاعي",trPh:"هتتابع إيه؟ مثلًا الخطوات",trOpt:"الاختيارات، كل اختيار في سطر (لحد 8)",trAdd:"+ إضافة متتبع من عندي",
+s6h:"آخر التفاصيل",jlang:"لغة الجورنال",week:"الأسبوع يبدأ يوم",sun:"الأحد",mon:"الاثنين",sat:"السبت",extras:"إضافات",
+yourName:"اسمك",yourNamePh:"عشان نعرف مين صاحب الطلب",notes:"حاجة تانية نعرفها؟ (اختياري)",
+orderH:"طلبك",occasion:"المناسبة",characters:"الشخصيات",datesL:"التواريخ",specials:"تواريخ مميزة",none:"لا يوجد",journal:"الجورنال",pages:"صفحة",total:"الإجمالي",photos:"الصور",to:"إلى",
+sendNote:"اضغط «ابعت الطلب» عشان يوصلنا على واتساب. هنأكد معاك ونوريك معاينة قبل الطباعة.",
+openWa:"افتح واتساب",step2H:"خطوة أخيرة: ابعت الصور",step2P:"طلبك اتفتح في واتساب. ابعت الصور في نفس الشات.",sharePhotos:"ابعت الصور",
+shareFail:"افتح شات الواتساب معانا وابعت الصور هناك.",photosLater:"مفيش صور مضافة. تقدر تبعتها لنا في شات الواتساب.",
+copy:"انسخ الطلب",copied:"اتنسخ. الصقه في رسالة لينا.",
+e_event:"اختار المناسبة الأول.",e_owner:"اكتب اسم صاحب الجورنال.",e_partner:"اكتب اسم الشريك، أو اختار «لوحده».",e_kid:"اكتب اسم كل طفل، أو شيل الفاضي.",
+e_start:"اختار تاريخ البداية.",e_key:"اكتب تاريخ المناسبة الأساسي.",e_bday:"اكتب عيد الميلاد."},
+
+fr:{phUp:"Envoi en cours...",phSent:"Photo ajoutée. Elle est envoyée avec votre commande.",phErr:"Échec de l'envoi. Choisissez la photo à nouveau.",phWait:"Les photos sont encore en cours d'envoi. Réessayez dans un instant.",photoTip3:"Ajoutez une photo nette de chaque personne, ou une photo de tout le monde. Les photos nous sont envoyées avec votre commande pour que les personnages leur ressemblent.",home:"Accueil",usePhoto:"Utiliser une photo",usePhotoHint:"Facultatif : nous lisons son allure sur une photo nette. Vous pourrez ajuster ensuite.",groupH:"Une photo de tout le monde",groupP2:"Ajoutez une photo avec tout le monde et nous créons tous les personnages d'un coup.",photoTip2:"Utilisez une photo ou créez chaque personnage à la main. Ce que vous voyez est exactement ce qui sera dans le journal. La photo sert seulement à créer les personnages et n'est pas envoyée avec la commande.",phReading:"Analyse de la photo...",phDone:"C'est fait. Vérifiez l'aperçu et ajustez si besoin.",phFail:"Impossible de lire la photo. Essayez une photo plus nette avec le visage visible, ou créez à la main.",phNo:"La lecture de photo n'a pas été autorisée. Créez le personnage à la main.",phBusy:"Occupé pour le moment. Réessayez dans une minute.",phGroupDone:"Créés : {n}. Vérifiez chaque aperçu et ajustez si besoin.",phMiss:"Introuvables : {n}. Utilisez leur propre photo ou créez à la main.",kidsHint:"Jusqu'à 3 enfants, de tout âge. Chacun est dessiné selon son âge, les adultes en adultes.",design:"Créer son personnage",skin:"Teint",hairStyle:"Coiffure",hairColor:"Couleur des cheveux",hijabColor:"Couleur du hijab",eyes:"Couleur des yeux",glasses:"Lunettes",beard:"Barbe",faceShape:"Forme du visage",photoTip:"Faites ressembler chaque personnage avec Créer son personnage : c'est exactement ainsi qu'il apparaîtra dans le journal. Si vous voulez que nous l'ajustions d'après une photo, envoyez-la dans la discussion WhatsApp, c'est facultatif.",sentH:"Commande envoyée",sentP:"Si WhatsApp ne s'est pas ouvert, touchez le bouton ci-dessous. Nous vous répondrons pour confirmer la livraison, le paiement et un aperçu avant l'impression.",s4p2:"Les pages sont imprimées par deux sur chaque feuille : le prix change toutes les deux pages.",delivH:"Livraison",delivNote:"Où devons-nous livrer le journal ? Les frais de livraison et le paiement sont confirmés avec vous sur WhatsApp.",phone:"Numéro de téléphone",city:"Ville et quartier",address:"Adresse complète (rue, immeuble, étage, appartement)",plusDeliv:"Frais de livraison non compris.",day:"Jour",month:"Mois",newOrder:"Nouvelle commande",outRange:"Une date ici est en dehors des dates du journal et n'y apparaîtra pas. Changez la date, le début ou la durée.",e_buyer:"Ajoutez votre nom.",e_phone:"Ajoutez un numéro où vous joindre.",e_addr:"Ajoutez la ville et l'adresse de livraison complète.",tag:"Journal personnalisé",h1:"Créez un journal fait rien que pour eux",hp:"Une année de suivis, de calendriers et de pages, avec les personnages illustrés de ceux que vous aimez.",
+back:"Retour",next:"Suivant",send:"Envoyer la commande",
+s1h:"Quelle est l'occasion ?",s1p:"Elle définit le thème et les pages spéciales. Tout reste modifiable ensuite.",
+ev_birthday:"Anniversaire",evd_birthday:"Un an jusqu'au prochain anniversaire",ev_wedding:"Mariage",evd_wedding:"Compte à rebours jusqu'au grand jour",ev_engagement:"Fiançailles",evd_engagement:"Du oui au mariage",
+ev_anniversary:"Anniversaire de couple",evd_anniversary:"Une année de plus ensemble",ev_graduation:"Diplôme",evd_graduation:"Pour le ou la diplômé(e)",ev_family:"Année en famille",evd_family:"Pour toute la famille",
+ev_newyear:"Nouvel an",evd_newyear:"De janvier à décembre",ev_custom:"Autre chose",evd_custom:"N'importe quelle occasion",
+s2h:"Pour qui est-il ?",s2p:"Chaque personne ici devient un personnage illustré dans le journal.",
+mainP:"Le journal est pour",name:"Son prénom",namePh:"Prénom",female:"Femme",male:"Homme",girl:"Fille",boy:"Garçon",
+bday:"Anniversaire (facultatif, ajoute des pages d'anniversaire ce mois-là)",birthday:"Anniversaire",
+whoElse:"Qui d'autre y figure ?",withP:"Avec un(e) partenaire",just:"Seul(e)",partner:"Partenaire",
+kidsOn:"Ajouter des enfants",famName:"Nom de famille (facultatif)",child:"Enfant",addKid:"+ Ajouter un enfant",
+photo:"Photo",photoHint:"Une photo nette du visage. Nous dessinons le personnage à partir d'elle.",addPhoto:"Ajouter une photo",changePhoto:"Changer la photo",
+groupP:"Si vous avez une photo avec tout le monde, ajoutez-la ici.",
+pers:"Personnalité (3 au maximum)",persNote:"Plus de détails : loisirs, expressions, blagues entre vous",persHint:"Cela nous sert à écrire les bulles avec leur voix.",
+tr_funny:"Drôle",tr_sarcastic:"Sarcastique",tr_romantic:"Romantique",tr_calm:"Calme",tr_energetic:"Énergique",tr_shy:"Timide",tr_dramatic:"Théâtral",tr_organized:"Organisé",
+tr_messy:"Désordonné",tr_foodie:"Gourmand",tr_coffee:"Fan de café",tr_sleepy:"Toujours fatigué",tr_sporty:"Sportif",tr_bookworm:"Grand lecteur",tr_gamer:"Gamer",tr_creative:"Créatif",
+s3h:"Les dates",s3p:"Le journal peut commencer n'importe quel jour, par exemple le jour où vous l'offrez.",start:"Début du journal",length:"Durée",months:"mois",
+key_birthday:"Son anniversaire",key_wedding:"Date du mariage",key_engagement:"Date du mariage (ou des fiançailles)",key_anniversary:"Date d'anniversaire de couple",key_graduation:"Date de remise du diplôme",
+spH:"Autres dates spéciales",spP:"Chacune est marquée sur les calendriers et a ses propres pages dans son mois.",spN:"Date spéciale",spAdd:"+ Ajouter une date spéciale",spWhat:"De quoi s'agit-il ?",spPh:"ex. l'anniversaire de maman, notre premier rendez-vous",
+s4h:"Choisissez les pages",s4p:"Décochez ce qui ne servira pas. Le prix se met à jour au fur et à mesure.",front:"Premières pages",monthly:"Chaque mois",occP:"Pages d'occasion",occPp:"Placées dans le mois de chaque occasion.",
+last:"Dernière page",about:"environ",dates:"dates",
+fp_belongs:"Page « Ce journal appartient à »",fpd_belongs:"Une première page avec son prénom et les personnages.",fp_guide:"Comment utiliser ce journal",fpd_guide:"Une page qui explique toutes les pages.",
+s5h:"Suivis de l'année",s5p:"Chaque suivi est une page pour toute l'année : coloriez une case par jour. Choisissez-en autant que vous voulez, ou aucun.",onePage:"1 page",
+own:"Vos propres suivis",ownP:"Suivez autre chose, jusqu'à 4.",myTr:"Mon suivi",trPh:"Quoi suivre, ex. Pas",trOpt:"Options, une par ligne (8 au maximum)",trAdd:"+ Ajouter mon suivi",
+s6h:"Derniers détails",jlang:"Langue du journal",week:"La semaine commence le",sun:"Dimanche",mon:"Lundi",sat:"Samedi",extras:"Options",
+yourName:"Votre nom",yourNamePh:"Pour savoir qui commande",notes:"Autre chose à savoir ? (facultatif)",
+orderH:"Votre commande",occasion:"Occasion",characters:"Personnages",datesL:"Dates",specials:"Dates spéciales",none:"aucune",journal:"Journal",pages:"pages",total:"Total",photos:"Photos",to:"au",
+sendNote:"Touchez Envoyer la commande pour nous l'envoyer sur WhatsApp. Nous confirmons et vous montrons un aperçu avant l'impression.",
+openWa:"Ouvrir WhatsApp",step2H:"Dernière étape : envoyez les photos",step2P:"Votre commande est dans WhatsApp. Envoyez maintenant les photos dans la même discussion.",sharePhotos:"Envoyer les photos",
+shareFail:"Ouvrez notre discussion WhatsApp et joignez-y les photos.",photosLater:"Aucune photo ajoutée. Vous pouvez nous les envoyer dans la discussion WhatsApp.",
+copy:"Copier la commande",copied:"Copié. Collez-la dans un message pour nous.",
+e_event:"Choisissez d'abord une occasion.",e_owner:"Ajoutez le prénom de la personne.",e_partner:"Ajoutez le prénom du partenaire, ou choisissez Seul(e).",e_kid:"Ajoutez un prénom pour chaque enfant, ou supprimez la ligne vide.",
+e_start:"Choisissez la date de début.",e_key:"Ajoutez la date principale de l'occasion.",e_bday:"Ajoutez son anniversaire."},
+
+es:{phUp:"Subiendo...",phSent:"Foto añadida. Se envía con tu pedido.",phErr:"No se pudo subir. Elige la foto otra vez.",phWait:"Las fotos aún se están subiendo. Inténtalo en un momento.",photoTip3:"Añade una foto clara de cada persona, o una foto de todos. Las fotos nos llegan con tu pedido para que los personajes se les parezcan.",home:"Inicio",usePhoto:"Usar una foto",usePhotoHint:"Opcional: leemos su aspecto de una foto clara. Luego puedes ajustarlo.",groupH:"Una foto de todos",groupP2:"Añade una foto con todos y diseñamos todos los personajes a la vez.",photoTip2:"Usa una foto o diseña cada personaje a mano. Lo que ves es exactamente cómo aparecerán en el diario. La foto solo se usa para diseñar los personajes y no se envía con el pedido.",phReading:"Mirando la foto...",phDone:"Listo. Revisa la vista previa y ajusta lo que quieras.",phFail:"No pudimos leer la foto. Prueba con una más clara donde se vea la cara, o diseña a mano.",phNo:"No se permitió leer la foto. Diseña el personaje a mano.",phBusy:"Ocupado ahora. Inténtalo en un minuto.",phGroupDone:"Diseñados: {n}. Revisa cada vista previa y ajusta lo que quieras.",phMiss:"No encontrados: {n}. Usa su propia foto o diseña a mano.",kidsHint:"Hasta 3 hijos, de cualquier edad. Cada uno se dibuja según su edad, los mayores como adultos.",design:"Diseña su personaje",skin:"Tono de piel",hairStyle:"Pelo",hairColor:"Color de pelo",hijabColor:"Color del hiyab",eyes:"Color de ojos",glasses:"Gafas",beard:"Barba",faceShape:"Forma de la cara",photoTip:"Haz que cada personaje se les parezca con Diseña su personaje: así aparecerán exactamente en el diario. Si quieres que lo ajustemos con una foto, puedes enviarla por el chat de WhatsApp, pero es opcional.",sentH:"Pedido enviado",sentP:"Si WhatsApp no se abrió, toca el botón de abajo. Te responderemos para confirmar el envío, el pago y una vista previa antes de imprimir.",s4p2:"Las páginas se imprimen de dos en dos por hoja, así que el precio cambia cada dos páginas.",delivH:"Entrega",delivNote:"¿Dónde entregamos el diario? El coste de envío y el pago se confirman contigo por WhatsApp.",phone:"Número de teléfono",city:"Ciudad y zona",address:"Dirección completa (calle, edificio, piso, puerta)",plusDeliv:"Envío no incluido.",day:"Día",month:"Mes",newOrder:"Empezar otro pedido",outRange:"Una fecha de aquí queda fuera de las fechas del diario y no aparecerá. Cambia la fecha, el inicio o la duración.",e_buyer:"Añade tu nombre.",e_phone:"Añade un teléfono de contacto.",e_addr:"Añade la ciudad y la dirección de entrega completa.",tag:"Diario personalizado",h1:"Diseña un diario hecho solo para ellos",hp:"Un año de registros, calendarios y páginas, con personajes ilustrados de la gente que quieres.",
+back:"Atrás",next:"Siguiente",send:"Enviar pedido",
+s1h:"¿Cuál es la ocasión?",s1p:"Define el tema y las páginas especiales. Puedes cambiarlo todo después.",
+ev_birthday:"Cumpleaños",evd_birthday:"Un año hasta el próximo cumpleaños",ev_wedding:"Boda",evd_wedding:"Cuenta atrás hasta el gran día",ev_engagement:"Compromiso",evd_engagement:"Del sí a la boda",
+ev_anniversary:"Aniversario",evd_anniversary:"Otro año juntos",ev_graduation:"Graduación",evd_graduation:"Para quien se gradúa",ev_family:"Año en familia",evd_family:"Para toda la familia",
+ev_newyear:"Año nuevo",evd_newyear:"De enero a diciembre",ev_custom:"Otra cosa",evd_custom:"Cualquier ocasión",
+s2h:"¿Para quién es?",s2p:"Cada persona aquí será un personaje ilustrado en el diario.",
+mainP:"El diario es para",name:"Su nombre",namePh:"Nombre",female:"Mujer",male:"Hombre",girl:"Niña",boy:"Niño",
+bday:"Cumpleaños (opcional, añade páginas de cumpleaños ese mes)",birthday:"Cumpleaños",
+whoElse:"¿Quién más aparece?",withP:"Con pareja",just:"Solo esa persona",partner:"Pareja",
+kidsOn:"Incluir niños",famName:"Apellido de la familia (opcional)",child:"Niño/a",addKid:"+ Añadir un niño",
+photo:"Foto",photoHint:"Una foto clara de la cara. Dibujamos el personaje a partir de ella.",addPhoto:"Añadir foto",changePhoto:"Cambiar foto",
+groupP:"Si tienes una foto con todos, añádela aquí.",
+pers:"Personalidad (elige hasta 3)",persNote:"Más detalles: aficiones, frases típicas, bromas privadas",persHint:"Lo usamos para escribir los bocadillos con su voz.",
+tr_funny:"Divertido",tr_sarcastic:"Sarcástico",tr_romantic:"Romántico",tr_calm:"Tranquilo",tr_energetic:"Enérgico",tr_shy:"Tímido",tr_dramatic:"Dramático",tr_organized:"Organizado",
+tr_messy:"Desordenado",tr_foodie:"Comilón",tr_coffee:"Fan del café",tr_sleepy:"Siempre con sueño",tr_sporty:"Deportista",tr_bookworm:"Gran lector",tr_gamer:"Gamer",tr_creative:"Creativo",
+s3h:"Las fechas",s3p:"El diario puede empezar cualquier día, por ejemplo el día que lo regalas.",start:"El diario empieza el",length:"Duración",months:"meses",
+key_birthday:"Su cumpleaños",key_wedding:"Fecha de la boda",key_engagement:"Fecha de la boda (o del compromiso)",key_anniversary:"Fecha del aniversario",key_graduation:"Fecha de la graduación",
+spH:"Otras fechas especiales",spP:"Cada una se marca en los calendarios y tiene sus propias páginas en su mes.",spN:"Fecha especial",spAdd:"+ Añadir una fecha especial",spWhat:"¿Qué es?",spPh:"p. ej. el cumpleaños de mamá, nuestra primera cita",
+s4h:"Elige las páginas",s4p:"Desmarca lo que no se vaya a usar. El precio se actualiza al momento.",front:"Primeras páginas",monthly:"Cada mes",occP:"Páginas de ocasión",occPp:"Van en el mes de cada ocasión.",
+last:"Última página",about:"aprox.",dates:"fechas",
+fp_belongs:"Página «Este diario es de»",fpd_belongs:"Una primera página con su nombre y los personajes.",fp_guide:"Cómo usar este diario",fpd_guide:"Una página que explica todas las páginas.",
+s5h:"Registros del año",s5p:"Cada registro es una página para todo el año: colorea una casilla al día. Elige los que quieras, o ninguno.",onePage:"1 página",
+own:"Tus propios registros",ownP:"Registra cualquier otra cosa, hasta 4.",myTr:"Mi registro",trPh:"Qué registrar, p. ej. Pasos",trOpt:"Opciones, una por línea (hasta 8)",trAdd:"+ Añadir mi registro",
+s6h:"Últimos detalles",jlang:"Idioma del diario",week:"La semana empieza el",sun:"Domingo",mon:"Lunes",sat:"Sábado",extras:"Extras",
+yourName:"Tu nombre",yourNamePh:"Para saber quién hace el pedido",notes:"¿Algo más que debamos saber? (opcional)",
+orderH:"Tu pedido",occasion:"Ocasión",characters:"Personajes",datesL:"Fechas",specials:"Fechas especiales",none:"ninguna",journal:"Diario",pages:"páginas",total:"Total",photos:"Fotos",to:"al",
+sendNote:"Toca Enviar pedido para mandárnoslo por WhatsApp. Confirmamos y te enseñamos una vista previa antes de imprimir.",
+openWa:"Abrir WhatsApp",step2H:"Un paso más: envía las fotos",step2P:"Tu pedido está en WhatsApp. Ahora envía las fotos en el mismo chat.",sharePhotos:"Enviar las fotos",
+shareFail:"Abre nuestro chat de WhatsApp y adjunta allí las fotos.",photosLater:"No has añadido fotos. Puedes enviárnoslas por el chat de WhatsApp.",
+copy:"Copiar pedido",copied:"Copiado. Pégalo en un mensaje para nosotros.",
+e_event:"Elige primero una ocasión.",e_owner:"Añade el nombre de la persona.",e_partner:"Añade el nombre de la pareja, o elige Solo esa persona.",e_kid:"Añade un nombre para cada niño, o quita el vacío.",
+e_start:"Elige la fecha de inicio.",e_key:"Añade la fecha principal de la ocasión.",e_bday:"Añade su cumpleaños."},
+
+de:{phUp:"Wird hochgeladen...",phSent:"Foto hinzugefügt. Es wird mit deiner Bestellung gesendet.",phErr:"Upload fehlgeschlagen. Wähle das Foto erneut.",phWait:"Fotos werden noch hochgeladen. Versuch es gleich noch einmal.",photoTip3:"Füge ein klares Foto jeder Person hinzu, oder ein Foto von allen. Die Fotos kommen mit deiner Bestellung zu uns, damit die Figuren ihnen ähnlich sehen.",home:"Startseite",usePhoto:"Foto verwenden",usePhotoHint:"Optional: Wir lesen das Aussehen aus einem klaren Foto. Danach kannst du anpassen.",groupH:"Ein Foto von allen",groupP2:"Füge ein Foto mit allen hinzu und wir gestalten alle Figuren auf einmal.",photoTip2:"Nutze ein Foto oder gestalte jede Figur von Hand. Was du siehst, erscheint genau so im Journal. Das Foto dient nur zum Gestalten der Figuren und wird nicht mit der Bestellung gesendet.",phReading:"Foto wird angesehen...",phDone:"Fertig. Prüfe die Vorschau und passe an, was du willst.",phFail:"Das Foto konnte nicht gelesen werden. Versuch ein klareres mit sichtbarem Gesicht, oder gestalte von Hand.",phNo:"Das Lesen des Fotos wurde nicht erlaubt. Gestalte die Figur von Hand.",phBusy:"Gerade beschäftigt. Versuch es in einer Minute.",phGroupDone:"Gestaltet: {n}. Prüfe jede Vorschau und passe an.",phMiss:"Nicht gefunden: {n}. Nutze ihr eigenes Foto oder gestalte von Hand.",kidsHint:"Bis zu 3 Kinder, jedes Alters. Jedes wird altersgerecht gezeichnet, Erwachsene als Erwachsene.",design:"Figur gestalten",skin:"Hautton",hairStyle:"Frisur",hairColor:"Haarfarbe",hijabColor:"Hijab-Farbe",eyes:"Augenfarbe",glasses:"Brille",beard:"Bart",faceShape:"Gesichtsform",photoTip:"Gestalte jede Figur mit Figur gestalten so, dass sie der Person ähnelt: genau so erscheint sie im Journal. Wenn wir sie nach einem Foto feinabstimmen sollen, schick es im WhatsApp-Chat, das ist optional.",sentH:"Bestellung gesendet",sentP:"Falls WhatsApp sich nicht geöffnet hat, tippe auf den Button unten. Wir melden uns, um Versand, Zahlung und eine Vorschau vor dem Druck zu bestätigen.",s4p2:"Die Seiten werden zu zweit pro Blatt gedruckt, der Preis ändert sich also mit jeder zweiten Seite.",delivH:"Lieferung",delivNote:"Wohin sollen wir das Journal liefern? Versandkosten und Zahlung klären wir mit dir per WhatsApp.",phone:"Telefonnummer",city:"Stadt und Viertel",address:"Vollständige Adresse (Straße, Haus, Etage, Wohnung)",plusDeliv:"Zuzüglich Versand.",day:"Tag",month:"Monat",newOrder:"Neue Bestellung starten",outRange:"Ein Datum hier liegt außerhalb des Journal-Zeitraums und erscheint nicht darin. Ändere das Datum, den Start oder die Dauer.",e_buyer:"Gib deinen Namen ein.",e_phone:"Gib eine Telefonnummer an, unter der wir dich erreichen.",e_addr:"Gib Stadt und vollständige Lieferadresse ein.",tag:"Persönliches Journal",h1:"Gestalte ein Journal nur für sie",hp:"Ein Jahr voller Tracker, Kalender und Seiten, mit gezeichneten Figuren deiner Liebsten.",
+back:"Zurück",next:"Weiter",send:"Bestellung senden",
+s1h:"Was ist der Anlass?",s1p:"Er bestimmt das Thema und die besonderen Seiten. Alles lässt sich später ändern.",
+ev_birthday:"Geburtstag",evd_birthday:"Ein Jahr bis zum nächsten Geburtstag",ev_wedding:"Hochzeit",evd_wedding:"Countdown bis zum großen Tag",ev_engagement:"Verlobung",evd_engagement:"Vom Ja bis zur Hochzeit",
+ev_anniversary:"Jahrestag",evd_anniversary:"Ein weiteres Jahr zusammen",ev_graduation:"Abschluss",evd_graduation:"Für die Absolventin oder den Absolventen",ev_family:"Familienjahr",evd_family:"Für die ganze Familie",
+ev_newyear:"Neujahr",evd_newyear:"Januar bis Dezember",ev_custom:"Etwas anderes",evd_custom:"Jeder Anlass",
+s2h:"Für wen ist es?",s2p:"Jede Person hier wird zu einer gezeichneten Figur im Journal.",
+mainP:"Das Journal ist für",name:"Name",namePh:"Name",female:"Weiblich",male:"Männlich",girl:"Mädchen",boy:"Junge",
+bday:"Geburtstag (optional, fügt Geburtstagsseiten in dem Monat hinzu)",birthday:"Geburtstag",
+whoElse:"Wer ist noch dabei?",withP:"Mit Partner(in)",just:"Nur diese Person",partner:"Partner(in)",
+kidsOn:"Kinder hinzufügen",famName:"Familienname (optional)",child:"Kind",addKid:"+ Kind hinzufügen",
+photo:"Foto",photoHint:"Ein klares Foto vom Gesicht. Daraus zeichnen wir die Figur.",addPhoto:"Foto hinzufügen",changePhoto:"Foto ändern",
+groupP:"Wenn du ein Foto mit allen hast, füge es hier hinzu.",
+pers:"Persönlichkeit (bis zu 3)",persNote:"Mehr über die Person: Hobbys, Sprüche, Insiderwitze",persHint:"Damit schreiben wir die Sprechblasen in ihrer Stimme.",
+tr_funny:"Witzig",tr_sarcastic:"Sarkastisch",tr_romantic:"Romantisch",tr_calm:"Ruhig",tr_energetic:"Energiegeladen",tr_shy:"Schüchtern",tr_dramatic:"Dramatisch",tr_organized:"Organisiert",
+tr_messy:"Chaotisch",tr_foodie:"Feinschmecker",tr_coffee:"Kaffeefan",tr_sleepy:"Immer müde",tr_sporty:"Sportlich",tr_bookworm:"Bücherwurm",tr_gamer:"Gamer",tr_creative:"Kreativ",
+s3h:"Die Daten",s3p:"Das Journal kann an jedem Tag beginnen, zum Beispiel am Tag, an dem du es verschenkst.",start:"Journal beginnt am",length:"Dauer",months:"Monate",
+key_birthday:"Geburtstag",key_wedding:"Hochzeitsdatum",key_engagement:"Hochzeitsdatum (oder Verlobungsdatum)",key_anniversary:"Datum des Jahrestags",key_graduation:"Datum des Abschlusses",
+spH:"Weitere besondere Tage",spP:"Jeder wird in den Kalendern markiert und bekommt eigene Seiten in seinem Monat.",spN:"Besonderer Tag",spAdd:"+ Besonderen Tag hinzufügen",spWhat:"Was ist es?",spPh:"z. B. Mamas Geburtstag, unser erstes Date",
+s4h:"Wähle die Seiten",s4p:"Entferne, was nicht gebraucht wird. Der Preis passt sich sofort an.",front:"Erste Seiten",monthly:"Jeden Monat",occP:"Anlass-Seiten",occPp:"Stehen im Monat des jeweiligen Anlasses.",
+last:"Letzte Seite",about:"ca.",dates:"Termine",
+fp_belongs:"Seite „Dieses Journal gehört“",fpd_belongs:"Eine erste Seite mit Namen und Figuren.",fp_guide:"So nutzt du dieses Journal",fpd_guide:"Eine Seite, die alle Seiten erklärt.",
+s5h:"Jahres-Tracker",s5p:"Jeder Tracker ist eine Seite für das ganze Jahr: jeden Tag ein Kästchen ausmalen. Wähle so viele du willst, oder keinen.",onePage:"1 Seite",
+own:"Eigene Tracker",ownP:"Verfolge etwas anderes, bis zu 4.",myTr:"Mein Tracker",trPh:"Was verfolgen, z. B. Schritte",trOpt:"Optionen, eine pro Zeile (bis zu 8)",trAdd:"+ Eigenen Tracker hinzufügen",
+s6h:"Letzte Details",jlang:"Sprache des Journals",week:"Die Woche beginnt am",sun:"Sonntag",mon:"Montag",sat:"Samstag",extras:"Extras",
+yourName:"Dein Name",yourNamePh:"Damit wir wissen, wer bestellt",notes:"Sollten wir noch etwas wissen? (optional)",
+orderH:"Deine Bestellung",occasion:"Anlass",characters:"Figuren",datesL:"Daten",specials:"Besondere Tage",none:"keine",journal:"Journal",pages:"Seiten",total:"Gesamt",photos:"Fotos",to:"bis",
+sendNote:"Tippe auf Bestellung senden, um sie uns per WhatsApp zu schicken. Wir bestätigen und zeigen dir vor dem Druck eine Vorschau.",
+openWa:"WhatsApp öffnen",step2H:"Noch ein Schritt: Fotos senden",step2P:"Deine Bestellung ist in WhatsApp. Sende jetzt die Fotos im selben Chat.",sharePhotos:"Fotos senden",
+shareFail:"Öffne unseren WhatsApp-Chat und hänge die Fotos dort an.",photosLater:"Keine Fotos hinzugefügt. Du kannst sie uns im WhatsApp-Chat schicken.",
+copy:"Bestellung kopieren",copied:"Kopiert. Füge sie in eine Nachricht an uns ein.",
+e_event:"Wähle zuerst einen Anlass.",e_owner:"Gib den Namen der Person ein.",e_partner:"Gib den Namen des Partners ein, oder wähle Nur diese Person.",e_kid:"Gib jedem Kind einen Namen, oder entferne das leere.",
+e_start:"Wähle das Startdatum.",e_key:"Gib das Hauptdatum des Anlasses ein.",e_bday:"Gib den Geburtstag ein."}
+};
+
+/* ================= Avatar engine: code-drawn chibi characters ================= */
+const AV = (() => {
+const K = "#3b2a23", SW = 2.1;
+const SKINS = ["#f9dcc4","#f1c6a7","#e8b48f","#d9a27a","#c68642","#a86b3c","#8d5524","#5c3a1e"];
+const HAIRC = ["#1f1612","#3b2418","#5a3825","#7a4a2a","#a0663a","#c9a063","#e8d3a2","#9a9a9a","#b33a3a"];
+const EYEC = ["#5a3a22","#2b1d14","#7a5a2a","#4f7a4a","#4a78a8","#7a8590"];
+const OPT = {
+  faceShape:[["oval","Oval"],["round","Round"],["square","Square"],["heart","Heart"]],
+  hair:[["curly_long","Long curly"],["curly_short","Short curly"],["straight_long","Long straight"],["wavy_medium","Wavy medium"],["bob","Bob"],["ponytail","Ponytail"],["bun","Bun"],["afro","Afro"],["short_crop","Short crop"],["side_part","Side part"],["buzz","Buzz cut"],["bald","Bald"],["hijab","Hijab"]],
+  brows:[["thin","Thin"],["thick","Thick"]],
+  facial:[["none","None"],["stubble","Stubble"],["short","Short beard"],["full","Full beard"],["mustache","Mustache"],["goatee","Goatee"]],
+  glasses:[["none","None"],["round","Round"],["square","Square"]],
+  body:[["soft","Curvy"],["straight","Straight"]],
+  top:[["tshirt","T-shirt"],["shirt","Button shirt"],["blouse","Blouse"],["polo","Polo"],["tank","Tank top"],["hoodie","Hoodie"],["sweater","Sweater"],["cardigan","Cardigan"],["blazer","Blazer / suit jacket"]],
+  bottom:[["trousers","Trousers"],["jeans","Jeans"],["shorts","Shorts"],["skirt","Midi skirt"],["skirt_long","Long skirt"],["sweatpants","Sweatpants"]],
+  dress:[["none","No dress (top + bottom)"],["gown","Evening gown"],["wedding","Wedding dress"],["sundress","Sundress"],["abaya","Abaya / long robe"],["grad_gown","Graduation gown"]],
+  shoes:[["sneakers","Sneakers"],["dress","Dress shoes"],["heels","Heels"],["sandals","Sandals"],["slippers","Slippers"],["boots","Boots"]],
+  acc:[["tie","Tie"],["bowtie","Bow tie"],["necklace","Necklace"],["boutonniere","Flower pin"],["bouquet","Bouquet"],["veil","Veil"],["sunhat","Sun hat"],["scarf","Scarf"],["gradcap","Graduation cap"],["diploma","Diploma"],["partyhat","Party hat"]],
+  pose:[["stand","Standing"],["wave","Waving"],["hips","Hands on hips"],["cheer","Cheering"],["point","Pointing"],["clasp","Hands clasped"]],
+  expr:[["happy","Happy"],["talking","Talking"],["laughing","Laughing"],["content","Content"],["wink","Wink"],["inlove","In love"],["shy","Shy"],["smug","Smug"],["thinking","Thinking"],["surprised","Surprised"],["nervous","Nervous"],["annoyed","Annoyed"],["angry","Angry"],["sad","Sad"],["crying","Crying"]]
+};
+const LOOKS = ["everyday","formal","wedding","beach","cozy","graduation"];
+
+function shade(hex, f){ // f<1 darker
+  const n=parseInt(hex.slice(1),16);let r=n>>16,g=(n>>8)&255,b=n&255;
+  r=Math.round(r*f);g=Math.round(g*f);b=Math.round(b*f);
+  return "#"+[r,g,b].map(v=>Math.max(0,Math.min(255,v)).toString(16).padStart(2,"0")).join("");
+}
+function kidDefaults(g){
+  const f=g!=="m";
+  return {age:"kid",skin:"#e8b48f",faceShape:"round",hair:f?"ponytail":"short_crop",hairColor:"#3b2418",eyes:"#5a3a22",brows:"thin",lashes:f,blush:true,facial:"none",glasses:"none",hijabColor:"#c9a6b8",body:f?"soft":"straight",
+    looks: f ? {
+      everyday:{dress:"sundress",dressColor:"#f9c5d1",top:"tshirt",topColor:"#fff",bottom:"shorts",bottomColor:"#7aa7c7",shoes:"sneakers",shoesColor:"#ffffff",acc:[],expr:"happy"},
+      formal:{dress:"gown",dressColor:"#c8a2c8",top:"blouse",topColor:"#fff",bottom:"skirt",bottomColor:"#333",shoes:"dress",shoesColor:"#c8a2c8",acc:[],expr:"wink"},
+      wedding:{dress:"sundress",dressColor:"#ffffff",top:"blouse",topColor:"#fff",bottom:"skirt",bottomColor:"#fff",shoes:"dress",shoesColor:"#f2efe6",acc:["bouquet"],expr:"happy"},
+      beach:{dress:"none",top:"tank",topColor:"#f2c94c",bottom:"shorts",bottomColor:"#7aa7c7",shoes:"sandals",shoesColor:"#b98a5a",acc:["sunhat"],expr:"laughing"},
+      cozy:{dress:"none",top:"hoodie",topColor:"#cdb4db",bottom:"sweatpants",bottomColor:"#5c6370",shoes:"slippers",shoesColor:"#f7e1e6",acc:[],expr:"content"},
+      graduation:{dress:"grad_gown",dressColor:"#1f2a44",top:"tshirt",topColor:"#fff",bottom:"trousers",bottomColor:"#333",shoes:"sneakers",shoesColor:"#fff",acc:["gradcap","diploma"],expr:"laughing"}}
+    : {
+      everyday:{dress:"none",top:"tshirt",topColor:"#5b8fc7",bottom:"shorts",bottomColor:"#c9b28a",shoes:"sneakers",shoesColor:"#ffffff",acc:[],expr:"happy"},
+      formal:{dress:"none",top:"shirt",topColor:"#ffffff",bottom:"trousers",bottomColor:"#2c3e66",shoes:"dress",shoesColor:"#1a1a1a",acc:["bowtie"],expr:"smug"},
+      wedding:{dress:"none",top:"blazer",topColor:"#2c3e66",bottom:"trousers",bottomColor:"#2c3e66",shoes:"dress",shoesColor:"#1a1a1a",acc:["bowtie","boutonniere"],expr:"happy"},
+      beach:{dress:"none",top:"tank",topColor:"#e0662f",bottom:"shorts",bottomColor:"#1e2a4a",shoes:"sandals",shoesColor:"#8a5a3a",acc:[],expr:"laughing"},
+      cozy:{dress:"none",top:"hoodie",topColor:"#4f7a4a",bottom:"sweatpants",bottomColor:"#3a3f4a",shoes:"slippers",shoesColor:"#5a4a3a",acc:[],expr:"content"},
+      graduation:{dress:"grad_gown",dressColor:"#1f2a44",top:"tshirt",topColor:"#fff",bottom:"trousers",bottomColor:"#333",shoes:"sneakers",shoesColor:"#fff",acc:["gradcap","diploma"],expr:"laughing"}}
+  };
+}
+function defaults(g,age){
+  const d=defaults0(g,age);
+  if(g==="m"){if(age==="kid"){d.looks.everyday.pose="cheer";d.looks.cozy.pose="hips";}else{d.looks.everyday.pose="hips";d.looks.formal.pose="stand";d.looks.cozy.pose="point";}}
+  return d;
+}
+function defaults0(g,age){
+  if(age==="kid")return kidDefaults(g);
+  const f=g!=="m";
+  return {
+    skin:f?"#e8b48f":"#c68642", faceShape:f?"oval":"square", hair:f?"curly_long":"curly_short", hairColor:f?"#2a1a12":"#1f1612",
+    eyes:"#5a3a22", brows:f?"thin":"thick", lashes:f, blush:f, facial:f?"none":"full", glasses:"none", hijabColor:"#c9a6b8", body:f?"soft":"straight",
+    looks: f ? {
+      everyday:{dress:"none",top:"blouse",topColor:"#ece4f7",bottom:"trousers",bottomColor:"#d8cbb8",shoes:"sneakers",shoesColor:"#ffffff",acc:["necklace"],expr:"happy"},
+      formal:{dress:"gown",dressColor:"#c8a2c8",top:"blouse",topColor:"#ffffff",bottom:"skirt_long",bottomColor:"#333",shoes:"heels",shoesColor:"#c8a2c8",acc:["necklace"],expr:"wink"},
+      wedding:{dress:"wedding",dressColor:"#fbfaf6",top:"blouse",topColor:"#fff",bottom:"skirt_long",bottomColor:"#fff",shoes:"heels",shoesColor:"#f2efe6",acc:["veil","bouquet"],expr:"happy"},
+      beach:{dress:"sundress",dressColor:"#f4f1ea",top:"tank",topColor:"#fff",bottom:"shorts",bottomColor:"#7aa7c7",shoes:"sandals",shoesColor:"#b98a5a",acc:["sunhat"],expr:"laughing"},
+      cozy:{dress:"none",top:"sweater",topColor:"#e6b3bf",bottom:"sweatpants",bottomColor:"#5c6370",shoes:"slippers",shoesColor:"#f7e1e6",acc:[],expr:"content"},
+      graduation:{dress:"grad_gown",dressColor:"#1f2a44",top:"blouse",topColor:"#fff",bottom:"trousers",bottomColor:"#333",shoes:"heels",shoesColor:"#1a1a1a",acc:["gradcap","diploma"],expr:"laughing"}}
+    : {
+      everyday:{dress:"none",top:"tshirt",topColor:"#2b2b2b",bottom:"trousers",bottomColor:"#c9b28a",shoes:"sneakers",shoesColor:"#ffffff",acc:[],expr:"happy"},
+      formal:{dress:"none",top:"blazer",topColor:"#1f1f24",bottom:"trousers",bottomColor:"#1f1f24",shoes:"dress",shoesColor:"#1a1a1a",acc:["tie"],expr:"smug"},
+      wedding:{dress:"none",top:"blazer",topColor:"#2c3e66",bottom:"trousers",bottomColor:"#8f949c",shoes:"dress",shoesColor:"#1a1a1a",acc:["tie","boutonniere"],expr:"happy"},
+      beach:{dress:"none",top:"polo",topColor:"#8e2430",bottom:"shorts",bottomColor:"#1e2a4a",shoes:"sandals",shoesColor:"#8a5a3a",acc:[],expr:"laughing"},
+      cozy:{dress:"none",top:"hoodie",topColor:"#9aa0a6",bottom:"sweatpants",bottomColor:"#3a3f4a",shoes:"slippers",shoesColor:"#5a4a3a",acc:[],expr:"content"},
+      graduation:{dress:"grad_gown",dressColor:"#1f2a44",top:"shirt",topColor:"#fff",bottom:"trousers",bottomColor:"#333",shoes:"dress",shoesColor:"#1a1a1a",acc:["gradcap","diploma"],expr:"laughing"}}
+  };
+}
+
+/* ---------- poses: [ctrlX, ctrlY, handX, handY] per arm, ankle x per leg, head tilt ---------- */
+const POSES={
+  stand:{L:[46,238,50,296],R:[154,238,150,296],legs:[80,120],tilt:0},
+  wave:{L:[46,238,50,296],R:[186,206,182,150],legs:[78,124],tilt:4},
+  hips:{L:[28,248,66,282],R:[172,248,134,282],legs:[74,126],tilt:-3},
+  cheer:{L:[18,200,20,146],R:[182,200,180,146],legs:[72,128],tilt:-3},
+  point:{L:[46,238,50,296],R:[172,224,190,244],legs:[80,122],tilt:3},
+  clasp:{L:[52,262,94,282],R:[148,262,106,282],legs:[84,116],tilt:6},
+  hold:{L:[60,252,86,266],R:[140,252,114,266],legs:[80,120],tilt:0}
+};
+const DEFAULT_POSE={everyday:"wave",formal:"hips",wedding:"hold",beach:"cheer",cozy:"clasp",graduation:"cheer"};
+const DEFS=`<defs><linearGradient id="shd" x1="0" x2="1" y1="0" y2=".25"><stop offset=".5" stop-color="#2a1608" stop-opacity="0"/><stop offset="1" stop-color="#2a1608" stop-opacity=".16"/></linearGradient>
+<linearGradient id="shdF" x1="0" x2="1"><stop offset=".55" stop-color="#7a3a20" stop-opacity="0"/><stop offset="1" stop-color="#7a3a20" stop-opacity=".12"/></linearGradient></defs>`;
+const SH=d=>`<path d="${d}" fill="url(#shd)"/>`;
+
+/* ---------- primitives ---------- */
+const P=(d,fill,sw=SW,extra="")=>`<path d="${d}" fill="${fill}" stroke="${K}" stroke-width="${sw}" stroke-linejoin="round" stroke-linecap="round" ${extra}/>`;
+const E=(cx,cy,rx,ry,fill,sw=SW,extra="")=>`<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${fill}" stroke="${K}" stroke-width="${sw}" ${extra}/>`;
+const Ln=(d,col=K,w=SW,extra="")=>`<path d="${d}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" ${extra}/>`;
+const tube=(d,col,w)=>Ln(d,K,w+SW*2)+Ln(d,col,w); // outlined thick stroke
+const heart=(x,y,s,col="#e0455f")=>`<path d="M${x} ${y+s*.35}C${x-s*.1} ${y-s*.05} ${x-s*.55} ${y-s*.05} ${x-s*.5} ${y+s*.3}C${x-s*.45} ${y+s*.55} ${x-s*.1} ${y+s*.7} ${x} ${y+s*.9}C${x+s*.1} ${y+s*.7} ${x+s*.45} ${y+s*.55} ${x+s*.5} ${y+s*.3}C${x+s*.55} ${y-s*.05} ${x+s*.1} ${y-s*.05} ${x} ${y+s*.35}Z" fill="${col}" stroke="${K}" stroke-width="1.4"/>`;
+
+/* ---------- head geometry ---------- */
+const FACE = {
+  oval:`M46 112C46 72 70 52 100 52C130 52 154 72 154 112C154 146 132 172 100 172C68 172 46 146 46 112Z`,
+  round:`M43 114C43 74 68 54 100 54C132 54 157 74 157 114C157 148 134 170 100 170C66 170 43 148 43 114Z`,
+  square:`M47 100C47 66 70 52 100 52C130 52 153 66 153 100L152 136C150 158 128 172 100 172C72 172 50 158 48 136Z`,
+  heart:`M45 104C45 68 70 52 100 52C130 52 155 68 155 104C155 134 134 158 100 174C66 158 45 134 45 104Z`
+};
+function curls(pts,r,col){ // fluffy curl circles
+  return pts.map(([x,y,rr])=>`<circle cx="${x}" cy="${y}" r="${rr||r}" fill="${col}" stroke="${K}" stroke-width="1.8"/>`).join("")
+    + pts.map(([x,y,rr])=>`<path d="M${x-(rr||r)*.45} ${y+1}a${(rr||r)*.42} ${(rr||r)*.42} 0 1 1 ${(rr||r)*.55} ${(rr||r)*.35}" fill="none" stroke="${shade(col,.55)}" stroke-width="1.4" stroke-linecap="round"/>`).join("");
+}
+function arcPts(cx,cy,rx,ry,a1,a2,n,r){const o=[];for(let i=0;i<n;i++){const a=(a1+(a2-a1)*i/(n-1))*Math.PI/180;o.push([cx+rx*Math.cos(a),cy+ry*Math.sin(a),r]);}return o;}
+
+function hairBack(p){
+  const c=p.hairColor;
+  switch(p.hair){
+    case "curly_long":{const pts=[...arcPts(100,120,72,95,150,390,26,15)];
+      return P(`M32 100C28 40 70 30 100 30C130 30 172 40 168 100L174 230C150 250 50 250 26 230Z`,c,0)+curls(pts,15,c);}
+    case "straight_long": return P(`M40 104C36 44 66 34 100 34C134 34 164 44 160 104L168 250C130 262 70 262 32 250Z`,c);
+    case "wavy_medium": return P(`M38 104C32 42 66 34 100 34C134 34 168 42 162 104C170 138 158 160 166 186C170 206 150 214 136 204C126 198 118 196 110 198L90 198C82 196 74 198 64 204C50 214 30 206 34 186C42 160 30 138 38 104Z`,c);
+    case "bob": return P(`M40 104C36 44 66 34 100 34C134 34 164 44 160 104L164 160C164 176 146 180 132 174L68 174C54 180 36 176 36 160Z`,c);
+    case "ponytail": return P(`M128 58C168 60 182 110 172 160C166 196 150 214 138 222C146 186 150 140 136 104Z`,c);
+    case "bun": return `<circle cx="100" cy="36" r="22" fill="${c}" stroke="${K}" stroke-width="${SW}"/>`+Ln(`M86 52Q100 58 114 52`,shade(c,.6),2);
+    case "afro": return curls(arcPts(100,96,70,68,0,360,30,17),17,c)+`<circle cx="100" cy="96" r="66" fill="${c}"/>`;
+    default: return "";
+  }
+}
+function hairFront(p){
+  const c=p.hairColor;
+  switch(p.hair){
+    case "curly_long": return P(`M44 112C40 58 70 40 100 40C130 40 160 58 156 112C150 88 138 78 120 74C108 84 80 82 64 78C52 86 46 98 44 112Z`,c,1.8)+curls([...arcPts(100,82,58,40,195,345,11,13),[48,104,12],[152,104,12],[44,126,11],[156,126,11]],13,c);
+    case "curly_short": return P(`M46 110C42 60 70 44 100 44C130 44 158 60 154 110C150 90 140 80 124 76C104 82 84 80 70 78C56 84 50 96 46 110Z`,c,1.8)+curls(arcPts(100,78,56,36,190,350,12,13),13,c);
+    case "afro": return P(`M46 110C42 60 70 44 100 44C130 44 158 60 154 110C150 90 140 80 124 76C104 82 84 80 70 78C56 84 50 96 46 110Z`,c,1.8);
+    case "straight_long": return P(`M42 124C40 50 68 40 100 40C132 40 162 50 158 124C154 92 142 78 132 72C116 90 80 86 62 80C50 92 44 106 42 124Z`,c);
+    case "wavy_medium": return P(`M42 126C40 48 68 40 100 40C132 40 162 48 158 126C152 94 136 82 126 78C108 96 82 92 60 86C48 98 44 110 42 126Z`,c);
+    case "bob": return P(`M42 130C38 48 68 38 100 38C132 38 162 48 158 130C156 112 154 102 150 94L50 94C46 102 44 112 42 130Z`,c);
+    case "ponytail": case "bun": return P(`M44 114C40 50 70 40 100 40C130 40 160 50 156 114C150 86 132 74 100 72C68 74 50 86 44 114Z`,c)+Ln(`M100 42Q98 58 100 72`,shade(c,.6),1.6);
+    case "short_crop": return P(`M44 112C40 54 70 40 100 40C130 40 160 54 156 112C152 92 146 82 136 78C116 72 84 72 64 78C54 82 48 92 44 112Z`,c);
+    case "side_part": return P(`M44 114C38 50 72 36 102 36C136 38 162 52 156 112C152 90 146 80 134 74C120 84 92 82 74 76C58 82 48 94 44 114Z`,c)+Ln(`M74 76Q90 58 120 52`,shade(c,.6),1.6);
+    case "buzz": return P(`M48 104C46 62 70 48 100 48C130 48 154 62 152 104C146 86 130 76 100 74C70 76 54 86 48 104Z`,c,1.2,`opacity=".75"`);
+    default: return "";
+  }
+}
+function hijab(p){
+  const c=p.hijabColor||"#c9a6b8";
+  return P(`M28 128C22 50 60 26 100 26C140 26 178 50 172 128C178 160 182 186 190 214L10 214C18 186 22 160 28 128Z`,c)+Ln(`M40 176Q100 206 160 176`,shade(c,.75),1.6);
+}
+function hijabFront(p){
+  const c=p.hijabColor||"#c9a6b8";
+  return P(`M44 120C42 60 70 46 100 46C130 46 158 60 156 120C150 82 130 66 100 66C70 66 50 82 44 120Z`,c)+Ln(`M60 70Q100 56 140 70`,shade(c,.75),1.4);
+}
+function brows(p,ex){
+  const col=shade(p.hairColor==="#e8d3a2"||p.hairColor==="#9a9a9a"?"#7a5a3a":p.hairColor,.9), w=p.brows==="thick"?4.2:2.6;
+  let L=`M66 98Q78 91 90 96`,R=`M110 96Q122 91 134 98`;
+  if(ex==="angry"){L=`M66 92L90 101`;R=`M110 101L134 92`;}
+  else if(["sad","nervous","shy","crying"].includes(ex)){L=`M66 99L90 92`;R=`M110 92L134 99`;}
+  else if(ex==="surprised"){L=`M66 90Q78 82 90 88`;R=`M110 88Q122 82 134 90`;}
+  else if(ex==="annoyed"){L=`M66 97L90 97`;R=`M110 97L134 97`;}
+  else if(ex==="smug"){L=`M66 96Q78 92 90 96`;R=`M110 92Q122 86 134 92`;}
+  else if(ex==="thinking"){R=`M110 92Q122 85 134 92`;}
+  return Ln(L,col,w)+Ln(R,col,w);
+}
+function eyeOpen(p,cx,cy,o={}){
+  const dx=o.dx||0,dy=o.dy||0,ir=o.ir||7.2,ry=o.ry||11;
+  let s=E(cx,cy,10,ry,"#fff",1.6)+`<circle cx="${cx+dx}" cy="${cy+1+dy}" r="${ir}" fill="${p.eyes}"/><path d="M${cx+dx-ir*.8} ${cy+1+dy+ir*.35}A${ir} ${ir} 0 0 0 ${cx+dx+ir*.8} ${cy+1+dy+ir*.35}" fill="none" stroke="${shade(p.eyes,1.6)}" stroke-width="1.6" opacity=".7"/><circle cx="${cx+dx}" cy="${cy+1+dy}" r="${ir*.48}" fill="#1a120c"/><circle cx="${cx+dx+2.6}" cy="${cy-2.2+dy}" r="2.5" fill="#fff"/><circle cx="${cx+dx-2.4}" cy="${cy+3.4+dy}" r="1.1" fill="#fff" opacity=".9"/>`;
+  s+=Ln(`M${cx-11} ${cy-2}Q${cx} ${cy-15} ${cx+11} ${cy-2}`,K,2.8);
+  if(p.lashes){const side=cx<100?-1:1;s+=Ln(`M${cx+side*10} ${cy-4}l${side*4} -3`,K,2.2);}
+  return s;
+}
+const eyeUp=(cx,cy)=>Ln(`M${cx-10} ${cy+3}Q${cx} ${cy-9} ${cx+10} ${cy+3}`,K,2.8);
+const eyeDown=(cx,cy)=>Ln(`M${cx-10} ${cy-2}Q${cx} ${cy+8} ${cx+10} ${cy-2}`,K,2.8);
+function eyeLid(p,cx,cy){return eyeOpen(p,cx,cy)+`<path d="M${cx-12} ${cy-14}H${cx+12}V${cy+1}H${cx-12}Z" fill="${p.skin}"/>`+Ln(`M${cx-11} ${cy+1}H${cx+11}`,K,2.8);}
+function eyes(p,ex){
+  const l=78,r=122,y=114;
+  switch(ex){
+    case "laughing": case "happy_closed": return eyeUp(l,y)+eyeUp(r,y);
+    case "content": return eyeDown(l,y)+eyeDown(r,y);
+    case "wink": return eyeOpen(p,l,y)+eyeUp(r,y);
+    case "inlove": return heart(l,y-9,20)+heart(r,y-9,20);
+    case "smug": case "annoyed": return eyeLid(p,l,y)+eyeLid(p,r,y);
+    case "surprised": case "nervous": return eyeOpen(p,l,y,{ir:4.6,ry:12.5})+eyeOpen(p,r,y,{ir:4.6,ry:12.5});
+    case "thinking": return eyeOpen(p,l,y,{dx:3,dy:-3})+eyeOpen(p,r,y,{dx:3,dy:-3});
+    case "shy": return eyeOpen(p,l,y,{dy:2})+eyeOpen(p,r,y,{dy:2});
+    case "crying": return Ln(`M${l-8} ${y-6}L${l+4} ${y}L${l-8} ${y+6}`,K,2.8)+Ln(`M${r+8} ${y-6}L${r-4} ${y}L${r+8} ${y+6}`,K,2.8);
+    default: return eyeOpen(p,l,y)+eyeOpen(p,r,y);
+  }
+}
+function mouth(ex){
+  const red="#8a2b2b",tg="#e98a94";
+  switch(ex){
+    case "happy": case "inlove": return P(`M86 144Q100 162 114 144Z`,red,2)+`<path d="M88 145H112L110 149H90Z" fill="#fff"/>`+`<ellipse cx="100" cy="154" rx="6" ry="3" fill="${tg}"/>`;
+    case "talking": return E(100,150,6,7.5,red,2)+`<ellipse cx="100" cy="154" rx="3.5" ry="2" fill="${tg}"/>`;
+    case "laughing": return P(`M82 142Q100 170 118 142Z`,red,2)+`<path d="M84 143H116L113 148H87Z" fill="#fff"/>`+`<ellipse cx="100" cy="158" rx="8" ry="4" fill="${tg}"/>`;
+    case "content": case "wink": return Ln(`M88 146Q100 157 112 146`,K,2.4);
+    case "shy": case "thinking": return Ln(`M91 151Q95.5 146 100 151Q104.5 156 109 151`,K,2.2);
+    case "smug": return Ln(`M88 151Q104 155 114 144`,K,2.4);
+    case "surprised": return E(100,151,4.5,5.5,red,2);
+    case "nervous": case "angry": return `<rect x="85" y="144" width="30" height="11" rx="3.5" fill="#fff" stroke="${K}" stroke-width="2"/>`+Ln(`M85 149.5H115M92.5 144V155M100 144V155M107.5 144V155`,K,1.2);
+    case "annoyed": return Ln(`M90 150H110`,K,2.4);
+    case "sad": return Ln(`M88 154Q100 144 112 154`,K,2.4);
+    case "crying": return P(`M86 158Q100 140 114 158Z`,red,2)+`<ellipse cx="100" cy="155" rx="5" ry="2.4" fill="${tg}"/>`;
+    default: return Ln(`M88 146Q100 157 112 146`,K,2.4);
+  }
+}
+function extras(ex){
+  switch(ex){
+    case "inlove": return heart(156,58,12)+heart(42,64,9)+heart(168,80,7);
+    case "shy": return Ln(`M62 134l-3 6M68 134l-3 6M74 134l-3 6M126 134l-3 6M132 134l-3 6M138 134l-3 6`,"#e0455f",1.6);
+    case "thinking": return `<circle cx="160" cy="66" r="4" fill="#fff" stroke="${K}" stroke-width="1.6"/><circle cx="170" cy="50" r="6" fill="#fff" stroke="${K}" stroke-width="1.6"/><circle cx="184" cy="30" r="9" fill="#fff" stroke="${K}" stroke-width="1.6"/>`;
+    case "nervous": return P(`M156 70C150 82 152 90 158 90C164 90 166 82 156 70Z`,"#8fd0f0",1.6);
+    case "angry": return Ln(`M146 62l8 8M154 62l-8 8M150 58v4M150 70v4`,"#e0455f",3);
+    case "sad": return P(`M70 128C66 136 67 141 71 141C75 141 76 136 70 128Z`,"#8fd0f0",1.4);
+    case "crying": return P(`M68 120C64 140 60 160 62 176L74 176C76 160 74 140 72 120Z`,"#8fd0f0",1.4,`opacity=".9"`)+P(`M132 120C126 140 126 160 126 176L138 176C140 160 136 140 128 120Z`,"#8fd0f0",1.4,`opacity=".9"`);
+    default: return "";
+  }
+}
+function facialHair(p){
+  const c=p.hairColor;
+  const jaw=`M47 116C48 150 70 176 100 178C130 176 152 150 153 116C150 132 142 140 132 140C126 154 116 160 100 160C84 160 74 154 68 140C58 140 50 132 47 116Z`;
+  const mus=`M82 141C90 135 96 137 100 140C104 137 110 135 118 141C112 146 106 145 100 143C94 145 88 146 82 141Z`;
+  switch(p.facial){
+    case "full": return P(jaw,c,1.8)+P(mus,c,1.6);
+    case "short": return P(`M50 124C54 152 74 170 100 172C126 170 146 152 150 124C146 136 140 142 132 142C126 154 116 158 100 158C84 158 74 154 68 142C60 142 54 136 50 124Z`,c,1.6,`opacity=".85"`)+P(mus,c,1.4);
+    case "stubble": return `<path d="${jaw}" fill="${c}" opacity=".28"/><path d="${mus}" fill="${c}" opacity=".35"/>`;
+    case "mustache": return P(mus,c,1.6);
+    case "goatee": return P(mus,c,1.6)+P(`M88 160C90 172 110 172 112 160C106 163 94 163 88 160Z`,c,1.6);
+    default: return "";
+  }
+}
+function glasses(p){
+  if(p.glasses==="none")return "";
+  const g=p.glasses==="round"?`<circle cx="78" cy="114" r="15" fill="rgba(255,255,255,.15)" stroke="${K}" stroke-width="2.6"/><circle cx="122" cy="114" r="15" fill="rgba(255,255,255,.15)" stroke="${K}" stroke-width="2.6"/>`
+    :`<rect x="61" y="102" width="34" height="25" rx="6" fill="rgba(255,255,255,.15)" stroke="${K}" stroke-width="2.6"/><rect x="105" y="102" width="34" height="25" rx="6" fill="rgba(255,255,255,.15)" stroke="${K}" stroke-width="2.6"/>`;
+  return g+Ln(`M93 112Q100 108 107 112`,K,2.4)+Ln(`M61 110L48 106M139 110L152 106`,K,2.2);
+}
+function head(p,ex,{body=false}={}){
+  let s="";
+  if(!body){ s+= p.hair==="hijab"?hijab(p):hairBack(p); }
+  if(p.hair!=="hijab") s+=E(46,120,7,11,p.skin,1.8)+E(154,120,7,11,p.skin,1.8);
+  s+=P(FACE[p.faceShape]||FACE.oval,p.skin)+`<path d="${FACE[p.faceShape]||FACE.oval}" fill="url(#shdF)"/>`;
+  if(!(p.blush||ex==="shy"||ex==="inlove")) s+=`<ellipse cx="66" cy="137" rx="8" ry="4.5" fill="#f19aa6" opacity=".22"/><ellipse cx="134" cy="137" rx="8" ry="4.5" fill="#f19aa6" opacity=".22"/>`;
+  if(p.blush||ex==="shy"||ex==="inlove") s+=`<ellipse cx="66" cy="136" rx="9" ry="5" fill="#f19aa6" opacity="${ex==="shy"?.75:.45}"/><ellipse cx="134" cy="136" rx="9" ry="5" fill="#f19aa6" opacity="${ex==="shy"?.75:.45}"/>`;
+  s+=Ln(`M98 122Q95 132 101 133`,shade(p.skin,.7),2);
+  s+=facialHair(p);
+  s+=eyes(p,ex)+brows(p,ex)+mouth(ex);
+  s+= p.hair==="hijab"?hijabFront(p):hairFront(p);
+  if(!["bald","buzz","curly_long","curly_short","afro"].includes(p.hair)) s+=Ln(p.hair==="hijab"?`M58 46Q78 30 104 30`:`M62 60Q80 46 104 45`,"#fff",4,`opacity=".28"`)+Ln(p.hair==="hijab"?`M114 31Q124 32 132 37`:`M114 46Q122 47 128 50`,"#fff",3,`opacity=".22"`);
+  s+=glasses(p)+extras(ex);
+  return s;
+}
+
+/* ---------- body ---------- */
+const HIP=296, ANK=466;
+function torsoPath(p){return p.body==="soft"?`M62 190Q100 182 138 190L144 232Q136 256 142 300L58 300Q64 256 56 232Z`:`M58 190Q100 182 142 190L148 240L144 302L56 302L52 240Z`;}
+function arms(p,sleeve,col,pose){
+  const lh=[pose.L[2],pose.L[3]],rh=[pose.R[2],pose.R[3]], skin=p.skin;
+  if(p.hair==="hijab"&&sleeve!=="wide")sleeve="long";
+  const L=`M64 198Q${pose.L[0]} ${pose.L[1]} ${lh[0]} ${lh[1]}`,R=`M136 198Q${pose.R[0]} ${pose.R[1]} ${rh[0]} ${rh[1]}`;
+  let s="";
+  for(const d of [L,R]){
+    if(sleeve==="long"){ s+=tube(d,col,19); }
+    else if(sleeve==="wide"){ s+=tube(d,col,27); }
+    else { s+=tube(d,skin,15); if(sleeve==="short") s+=Ln(d,K,25,`stroke-dasharray="40 400"`)+Ln(d,col,21,`stroke-dasharray="40 400"`); if(sleeve==="puff") s+=Ln(d,K,29,`stroke-dasharray="30 400"`)+Ln(d,col,25,`stroke-dasharray="30 400"`); }
+  }
+  const hand=(x,y,up)=>`<circle cx="${x}" cy="${y+(up?-3:4)}" r="8.5" fill="${skin}" stroke="${K}" stroke-width="${SW}"/>`+(up?Ln(`M${x-5} ${y-9}l1 -5M${x} ${y-11}v-5M${x+5} ${y-9}l-1 -5`,K,1.6):"");
+  s+=hand(lh[0],lh[1],lh[1]<200)+hand(rh[0],rh[1],rh[1]<200);
+  return s;
+}
+function legs(p,lk,pose){
+  const sk=p.skin,bc=lk.bottomColor;let b=lk.bottom;const [la,ra]=pose.legs;
+  if(p.hair==="hijab"&&b==="shorts")b="trousers";
+  if(p.hair==="hijab"&&lk.dress==="none"&&(b==="skirt"||b==="skirt_long")) return "";
+  const LL=`M82 ${HIP}L${la} ${ANK}`,RL=`M118 ${HIP}L${ra} ${ANK}`;
+  const legCol=(p.hair==="hijab"&&lk.dress!=="none")?shade(lk.dressColor||"#555555",.55):sk;
+  let s=tube(LL,legCol,24)+tube(RL,legCol,24);
+  if(lk.dress!=="none")return s;
+  if(["trousers","jeans","sweatpants"].includes(b)&&lk.dress==="none"){
+    s=tube(LL,bc,28)+tube(RL,bc,28);
+    if(b==="jeans")s+=Ln(`M86 ${HIP+6}L${la+4} ${ANK-6}M114 ${HIP+6}L${ra-4} ${ANK-6}`,shade(bc,.75),1.4,`stroke-dasharray="3 3"`);
+    if(b==="sweatpants")s+=Ln(`M${la-12} ${ANK-8}H${la+14}M${ra-14} ${ANK-8}H${ra+12}`,shade(bc,.7),2);
+    if(b==="trousers")s+=Ln(`M82 ${HIP+8}L${la+1} ${ANK-4}M118 ${HIP+8}L${ra-1} ${ANK-4}`,shade(bc,.8),1.2);
+    s+=Ln(`M118 ${HIP+4}L${ra} ${ANK-4}`,"#2a1608",12,`opacity=".07"`);
+  } else if(b==="shorts"){
+    s+=P(`M58 ${HIP-6}H142L146 ${HIP+56}H104L100 ${HIP+18}L96 ${HIP+56}H54Z`,bc);
+  }
+  return s;
+}
+function skirtOver(lk,p){
+  if(lk.dress!=="none")return "";
+  if(lk.bottom==="skirt"&&!(p&&p.hair==="hijab"))return P(`M60 ${HIP-8}H140L156 ${HIP+92}Q100 ${HIP+102} 44 ${HIP+92}Z`,lk.bottomColor)+Ln(`M80 ${HIP+4}L72 ${HIP+90}M120 ${HIP+4}L128 ${HIP+90}`,shade(lk.bottomColor,.8),1.2);
+  if(lk.bottom==="skirt_long"||(lk.bottom==="skirt"&&p&&p.hair==="hijab"))return P(`M60 ${HIP-8}H140L160 ${ANK-2}Q100 ${ANK+8} 40 ${ANK-2}Z`,lk.bottomColor)+Ln(`M82 ${HIP+6}L72 ${ANK-6}M118 ${HIP+6}L128 ${ANK-6}`,shade(lk.bottomColor,.8),1.2);
+  return "";
+}
+function shoes(p,lk,pose){
+  const c=lk.shoesColor||"#fff",y=ANK;
+  const one=(x)=>{switch(lk.shoes){
+    case "dress": return P(`M${x-14} ${y+2}C${x-14} ${y-6} ${x+10} ${y-6} ${x+16} ${y+4}L${x+16} ${y+10}H${x-14}Z`,c,2)+Ln(`M${x-8} ${y-1}l6 0`,"#fff",1.2,`opacity=".5"`);
+    case "heels": return P(`M${x-10} ${y+8}C${x-10} ${y-4} ${x+6} ${y-4} ${x+12} ${y+6}L${x+12} ${y+10}L${x-2} ${y+10}L${x-8} ${y+16}L${x-11} ${y+16}Z`,c,2);
+    case "sandals": return P(`M${x-11} ${y-2}C${x-12} ${y+10} ${x+12} ${y+12} ${x+13} ${y+2}C${x+10} ${y-6} ${x-10} ${y-8} ${x-11} ${y-2}Z`,p.skin,2)+`<rect x="${x-14}" y="${y+8}" width="28" height="5" rx="2.5" fill="${c}" stroke="${K}" stroke-width="1.8"/>`+Ln(`M${x-10} ${y+1}Q${x} ${y-3} ${x+10} ${y+2}`,c,3);
+    case "slippers": return P(`M${x-15} ${y+6}C${x-15} ${y-8} ${x+15} ${y-8} ${x+16} ${y+6}L${x+16} ${y+12}H${x-15}Z`,c,2)+`<circle cx="${x}" cy="${y-2}" r="4" fill="#fff" stroke="${K}" stroke-width="1.4"/>`;
+    case "boots": return P(`M${x-12} ${y-30}H${x+10}L${x+12} ${y}C${x+18} ${y+2} ${x+18} ${y+12} ${x+14} ${y+12}H${x-14}Z`,c,2);
+    default: return P(`M${x-15} ${y+4}C${x-15} ${y-8} ${x+12} ${y-8} ${x+17} ${y+4}L${x+17} ${y+10}H${x-15}Z`,c,2)+Ln(`M${x-15} ${y+6}H${x+17}`,shade(c,.8),2);
+  }};
+  return one(pose.legs[0])+one(pose.legs[1]);
+}
+function top(p,lk){
+  const t=(p.hair==="hijab"&&lk.top==="tank")?"tshirt":lk.top,c=lk.topColor,tp=torsoPath(p);
+  let s="",sleeve="long";
+  switch(t){
+    case "tshirt": s=P(tp,c)+Ln(`M86 189Q100 200 114 189`,shade(c,.7),2);sleeve="short";break;
+    case "polo": s=P(tp,c)+P(`M86 188L100 200L92 206Z`,c,1.6)+P(`M114 188L100 200L108 206Z`,c,1.6)+`<circle cx="100" cy="210" r="1.8" fill="${K}"/><circle cx="100" cy="220" r="1.8" fill="${K}"/>`;sleeve="short";break;
+    case "tank": s=P(p.body==="soft"?`M66 206Q100 214 134 206L142 232Q136 256 142 300L58 300Q64 256 58 232Z`:`M64 204Q100 212 136 204L146 240L144 302L56 302L54 240Z`,c)+tube(`M72 206L76 190`,c,6)+tube(`M128 206L124 190`,c,6);sleeve="none";break;
+    case "blouse": s=P(tp,c)+P(`M88 189L100 214L112 189`,"none",1.8);sleeve="puff";break;
+    case "shirt": s=P(tp,c)+P(`M86 187L100 202L90 210Z`,c,1.6)+P(`M114 187L100 202L110 210Z`,c,1.6)+[214,232,250,268,286].map(y=>`<circle cx="100" cy="${y}" r="1.8" fill="${K}"/>`).join("")+Ln(`M100 204V300`,shade(c,.8),1.2);break;
+    case "hoodie": s=P(`M66 196Q100 168 134 196`,shade(c,.85),2)+P(tp,c)+P(`M76 258H124L128 292H72Z`,shade(c,.92),1.6)+Ln(`M94 196V224M106 196V224`,"#fff",2.2);break;
+    case "sweater": s=P(tp,c)+Ln(`M60 292H140`,shade(c,.75),5,`stroke-dasharray="2 3"`)+Ln(`M86 189Q100 198 114 189`,shade(c,.7),3);break;
+    case "cardigan": s=P(tp,"#fbfaf6")+P(p.body==="soft"?`M62 190L92 192L94 300L58 300Q64 256 56 232Z`:`M58 190L92 192L94 302L56 302L52 240Z`,c)+P(p.body==="soft"?`M138 190L108 192L106 300L142 300Q136 256 144 232Z`:`M142 190L108 192L106 302L144 302L148 240Z`,c)+[220,245,270].map(y=>`<circle cx="90" cy="${y}" r="2" fill="${K}"/>`).join("");break;
+    case "blazer": s=P(tp,"#fbfaf6")+P(`M86 187L100 200L92 206Z`,"#fbfaf6",1.4)+P(`M114 187L100 200L108 206Z`,"#fbfaf6",1.4)
+      +P(p.body==="soft"?`M62 190L88 188L100 262L96 300L58 300Q64 256 56 232Z`:`M58 190L88 188L100 262L98 302L56 302L52 240Z`,c)
+      +P(p.body==="soft"?`M138 190L112 188L100 262L104 300L142 300Q136 256 144 232Z`:`M142 190L112 188L100 262L102 302L144 302L148 240Z`,c)
+      +P(`M88 188L80 214L94 222Z`,shade(c,.85),1.4)+P(`M112 188L120 214L106 222Z`,shade(c,.85),1.4)+`<circle cx="104" cy="272" r="2.2" fill="${K}"/><circle cx="104" cy="288" r="2.2" fill="${K}"/>`+Ln(`M118 268H134`,K,1.4);break;
+    default: s=P(tp,c);
+  }
+  return {s,sleeve,col:t==="cardigan"||t==="blazer"?c:c};
+}
+function dress(p,lk){
+  const c=lk.dressColor||"#fff";
+  switch(lk.dress){
+    case "gown": return {s:P(`M64 196Q100 206 136 196L142 236Q134 258 136 270L172 ${ANK+4}Q100 ${ANK+16} 28 ${ANK+4}L64 270Q66 258 58 236Z`,c)+Ln(`M84 280L70 ${ANK}M116 280L130 ${ANK}M100 276V${ANK+6}`,shade(c,.82),1.3)+`<g fill="#fff" opacity=".8">${[[80,320],[120,360],[96,400],[140,420],[60,430]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.6"/>`).join("")}</g>`,sleeve:"none"};
+    case "wedding": return {s:P(`M66 200Q84 192 100 202Q116 192 134 200L140 238Q132 258 134 270L176 ${ANK+6}Q100 ${ANK+18} 24 ${ANK+6}L66 270Q68 258 60 238Z`,c)+Ln(`M86 282L66 ${ANK}M114 282L134 ${ANK}M100 280V${ANK+8}`,"#e6e1d3",1.3)+Ln(`M62 266Q100 276 138 266`,"#e6e1d3",2),sleeve:"none"};
+    case "sundress": if(p.hair==="hijab")return {s:P(`M60 194Q100 186 140 194L142 238Q134 258 138 270L164 ${ANK+2}Q100 ${ANK+12} 36 ${ANK+2}L62 270Q66 258 58 238Z`,c)+Ln(`M60 268Q100 276 140 268`,shade(c,.8),1.6),sleeve:"long"};
+      return {s:P(`M64 206Q100 216 136 206L142 238Q134 258 138 270L160 ${HIP+86}Q100 ${HIP+96} 40 ${HIP+86}L62 270Q66 258 58 238Z`,c)+tube(`M74 208L78 190`,c,4)+tube(`M126 208L122 190`,c,4)+Ln(`M60 268Q100 276 140 268`,shade(c,.8),1.6),sleeve:"none"};
+    case "grad_gown": return {s:P(`M56 190Q100 182 144 190L152 240L160 ${ANK-30}Q100 ${ANK-18} 40 ${ANK-30}L48 240Z`,c)+P(`M86 188L100 230L114 188`,"#fff",1.6)+P(`M84 188L94 300L88 302L76 192Z`,"#f2c94c",1.6)+P(`M116 188L106 300L112 302L124 192Z`,"#f2c94c",1.6)+Ln(`M70 260L66 ${ANK-34}M130 260L134 ${ANK-34}`,shade(c,.7),1.3),sleeve:"wide"};
+    case "abaya": return {s:P(`M58 190Q100 182 142 190L150 240L154 ${ANK+2}Q100 ${ANK+10} 46 ${ANK+2}L50 240Z`,c)+Ln(`M100 196V${ANK+4}`,shade(c,.8),1.4),sleeve:"long"};
+    default: return null;
+  }
+}
+function accessories(p,lk,phase,pose){
+  const a=lk.acc||[];let s="";
+  if(phase==="back"){
+    if(a.includes("veil")) s+=P(`M50 70C30 140 34 300 44 420Q100 436 156 420C166 300 170 140 150 70Z`,"rgba(255,255,255,.55)",1.4);
+    return s;
+  }
+  if(phase==="neck"){
+    if(a.includes("tie")) s+=P(`M96 196H104L106 206L103 256L100 262L97 256L94 206Z`,lk.dress==="none"&&lk.top==="blazer"&&lk.topColor==="#1f1f24"?"#6a2a3a":"#5b4636",1.6);
+    if(a.includes("bowtie")) s+=P(`M100 197L86 190V204Z`,"#1a1a1a",1.4)+P(`M100 197L114 190V204Z`,"#1a1a1a",1.4)+`<circle cx="100" cy="197" r="3" fill="#1a1a1a"/>`;
+    if(a.includes("necklace")) s+=Ln(`M86 192Q100 212 114 192`,"#c9a227",1.6)+`<circle cx="100" cy="206" r="3" fill="#e0c060" stroke="${K}" stroke-width="1"/>`;
+    if(a.includes("scarf")) s+=P(`M76 188Q100 204 124 188L126 198Q100 216 74 198Z`,"#c0504d",1.8)+P(`M108 204L116 240L104 242L100 206Z`,"#c0504d",1.6);
+    if(a.includes("boutonniere")) s+=`<circle cx="122" cy="214" r="4" fill="#fff" stroke="${K}" stroke-width="1.2"/><circle cx="127" cy="210" r="3.4" fill="#f2c94c" stroke="${K}" stroke-width="1.2"/>`+Ln(`M122 218l-2 8`,"#4f7a4a",1.6);
+    return s;
+  }
+  if(phase==="hands"){
+    if(a.includes("diploma")&&!a.includes("bouquet")){const hx=pose?pose.R[2]:150,hy=pose?pose.R[3]:296;s+=`<g transform="translate(${hx-150} ${hy-296}) rotate(-25 152 300)"><rect x="140" y="292" width="34" height="11" rx="5" fill="#fbf6e6" stroke="${K}" stroke-width="1.8"/><rect x="154" y="291" width="5" height="13" fill="#d9577a" stroke="${K}" stroke-width="1.2"/></g>`;}
+    if(a.includes("bouquet")) s+=P(`M90 278L100 312L110 278Z`,"#f3ecd8",1.6)+[[92,268,"#f6c1cf"],[104,262,"#f2c94c"],[110,272,"#fff"],[98,276,"#f9a8a8"],[86,276,"#fff"]].map(([x,y,c])=>`<circle cx="${x}" cy="${y}" r="7" fill="${c}" stroke="${K}" stroke-width="1.4"/>`).join("");
+    return s;
+  }
+  if(phase==="hat"){
+    if(a.includes("gradcap")) s+=P(`M36 52L100 28L164 52L100 74Z`,"#1f1f2a",2)+P(`M64 62V78Q100 92 136 78V62L100 74Z`,"#1f1f2a",2)+Ln(`M100 50L150 58L152 92`,"#f2c94c",2.4)+`<circle cx="152" cy="96" r="4" fill="#f2c94c" stroke="${K}" stroke-width="1.2"/>`;
+    if(a.includes("partyhat")) s+=P(`M78 54L100 6L122 54Z`,"#f6c1cf",2)+Ln(`M86 38L112 30M82 48L118 40`,"#7aa7c7",3)+`<circle cx="100" cy="6" r="5" fill="#f2c94c" stroke="${K}" stroke-width="1.4"/>`;
+    if(a.includes("sunhat")) s+=E(100,58,78,16,"#f1dfb0",2)+P(`M62 58C62 22 138 22 138 58Z`,"#f1dfb0",2)+Ln(`M64 52Q100 60 136 52`,"#d9577a",5);
+    return s;
+  }
+  return s;
+}
+function poseOf(lk,look){const a=lk.acc||[];if(a.includes("bouquet"))return POSES.hold;return POSES[lk.pose||DEFAULT_POSE[look]||"stand"]||POSES.stand;}
+function body(p,lk,kid,look){
+  const pose=poseOf(lk,look);
+  let s=`<ellipse cx="100" cy="${ANK+18}" rx="56" ry="7" fill="#000" opacity=".07"/>`;
+  s+=accessories(p,lk,"back");
+  if(!kid){ if(p.hair!=="hijab") s+=hairBack(p);
+  s+=`<rect x="88" y="160" width="24" height="36" fill="${p.skin}" stroke="${K}" stroke-width="${SW}"/>`; }
+  s+=legs(p,lk,pose)+shoes(p,lk,pose);
+  const d=dress(p,lk);
+  let tp;
+  if(d){ const m=d.s.match(/^<path d="([^"]+)"/); s+=d.s+(m?SH(m[1]):""); tp={sleeve:d.sleeve,col:lk.dressColor}; }
+  else { s+=skirtOver(lk,p); tp=top(p,lk); s+=tp.s+SH(torsoPath(p)); }
+  s+=accessories(p,lk,"neck");
+  s+=arms(p,tp.sleeve,tp.col,pose);
+  s+=accessories(p,lk,"hands",pose);
+  if(p.hair==="hijab") s+=hijab(p);
+  return s;
+}
+function svgBody(p,look){
+  const lk=Object.assign({acc:[]},p.looks[look]||p.looks.everyday);
+  const kid=p.age==="kid";
+  const tilt=poseOf(lk,look).tilt;
+  const inner=(kid?(p.hair!=="hijab"?hairBack(p):"")+`<rect x="90" y="160" width="20" height="34" fill="${p.skin}" stroke="${K}" stroke-width="${SW}"/>`+`<g transform="translate(100 190) scale(${p.kidScale||.68}) translate(-100 -190)">${body(p,lk,true,look)}</g>`:body(p,lk,false,look))+`<g transform="rotate(${tilt} 100 176)">`+head({...p,hair:p.hair},lk.expr||"happy",{body:true})+accessories(p,lk,"hat")+`</g>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-14 0 228 ${ANK+30}" width="456" height="${(ANK+30)*2}">${DEFS}${inner}</svg>`;
+}
+function svgHead(p,ex){
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="400" height="400">${DEFS}<defs><clipPath id="hc"><rect x="-20" y="-20" width="240" height="${p.hair==="hijab"?214:190}"/></clipPath></defs><g clip-path="url(#hc)">${head(p,ex)}</g></svg>`;
+}
+return {SKINS,HAIRC,EYEC,OPT,LOOKS,DEFAULT_POSE,defaults,svgBody,svgHead,shade};
+})();
+
+const LANGS=[["en","English"],["ar","العربية"],["fr","Français"],["es","Español"],["de","Deutsch"]];
+const EVENTS=["birthday","wedding","engagement","anniversary","graduation","family","newyear","custom"];
+const KEY_EVENTS=["birthday","wedding","engagement","anniversary","graduation"];
+const EVENT_OCC={family:"family",birthday:"birthday",wedding:"wedding",engagement:"engagement",anniversary:"anniversary",graduation:"graduation",newyear:"other",custom:"other"};
+const OCC_SET={birthday:["wish","bres","letter","recap"],wedding:["check","vows","letter","recap"],engagement:["story","letter","recap"],anniversary:["reasons","then","letter","recap"],
+  graduation:["letter","recap","thanks","next"],family:["recap"],other:["letter","recap"]};
+const OCC_DESC={wish:"op_wish",bres:"op_bres",letter:"sp_letter",recap:"sp_recap",check:"op_check",vows:"op_vows",story:"op_story",reasons:"op_reasons",then:"op_then",thanks:"op_thanks",next:"op_next"};
+const OCC_DEFAULT_OFF=["birthday_letter","birthday_recap"];
+const FRONT=["fp_belongs","fp_guide","fp_glance","fp_countdown"];
+const MONTHLY=["mp_cover","mp_cal","mp_habits","mp_mood","mp_sleep","mp_coffee","mp_self","mp_doodle","mp_grat","mp_high","mp_movies","mp_series","mp_play","mp_notes","mp_chores"];
+const FAMFRONT=["op_family","op_bucket","op_growth"];
+const TRACKERS=[...DATA.core.map(k=>({k,lib:false})),...DATA.lib.map(([k,who])=>({k,who,lib:true}))];
+const SPECIAL_TYPES=["birthday","anniversary","wedding","engagement","graduation","family","other"];
+const TRAITS=["funny","sarcastic","romantic","calm","energetic","shy","dramatic","organized","messy","foodie","coffee","sleepy","sporty","bookworm","gamer","creative"];
+
+const pad=n=>String(n).padStart(2,"0");
+const todayISO=()=>{const t=new Date();return `${t.getFullYear()}-${pad(t.getMonth()+1)}-${pad(t.getDate())}`;};
+const parseD=s=>{if(!s)return null;const m=/^(\d{4})-(\d\d)-(\d\d)$/.exec(s);return m?new Date(Date.UTC(+m[1],+m[2]-1,+m[3])):null;};
+const daysIn=(y,m)=>new Date(Date.UTC(y,m,0)).getUTCDate();
+const iso=d=>`${d.getUTCFullYear()}-${pad(d.getUTCMonth()+1)}-${pad(d.getUTCDate())}`;
+const longD=(d,loc)=>d?d.toLocaleDateString(loc||"en-GB",{day:"numeric",month:"short",year:"numeric",timeZone:"UTC"}):"";
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const money=n=>Math.round(n).toLocaleString("en-US")+" "+SHOP.currency;
+const $=id=>document.getElementById(id);
+const cap=s=>s?s.charAt(0).toUpperCase()+s.slice(1):s;
+
+function defaults(){
+  const pages={};
+  FRONT.forEach(k=>pages[k]=true);TRACKERS.forEach(t=>pages[t.k]=!t.lib);MONTHLY.forEach(k=>pages[k]=true);
+  pages.sp_review=true;FAMFRONT.forEach(k=>pages[k]=false);pages.op_resol=false;
+  for(const t in OCC_SET)OCC_SET[t].forEach(pk=>pages["oc_"+t+"_"+pk]=!OCC_DEFAULT_OFF.includes(t+"_"+pk));
+  const nav=(navigator.language||"en").slice(0,2).toLowerCase(),ui=LANGS.some(l=>l[0]===nav)?nav:"en";
+  return {v:2,ui,lang:ui,event:"",owner:"",ownerG:"f",couple:true,partner:"",partnerG:"m",family:false,familyName:"",kids:[],ownerBday:"",partnerBday:"",
+    persona:{owner:{traits:[],note:""},partner:{traits:[],note:""}},av:{},orderId:Array.from({length:10},()=>"abcdefghjkmnpqrstuvwxyz23456789"[Math.floor(Math.random()*31)]).join(""),photos:{},photoFolder:"",
+    start:todayISO(),length:12,eventDate:"",specials:[],pages,customTrackers:[],weekStart:ui==="ar"?5:0,buyer:"",phone:"",city:"",address:"",notes:"",addons:[]};
+}
+const newKid=()=>({name:"",g:"f",birthday:"",traits:[],note:"",av:null});
+const PRESET={birthday:{fp_countdown:false,sp_review:true},wedding:{fp_countdown:true,sp_review:false},engagement:{fp_countdown:true,sp_review:false},
+  anniversary:{fp_countdown:false,sp_review:true},graduation:{fp_countdown:true,sp_review:false},family:{fp_countdown:false,sp_review:true,mp_chores:true},
+  newyear:{fp_countdown:false,sp_review:true},custom:{}};
+const PRESET_FRONT={family:["op_family","op_bucket","op_growth"],newyear:["op_resol"]};
+function applyEvent(ev){
+  O.event=ev;Object.assign(O.pages,PRESET[ev]);
+  FAMFRONT.forEach(k=>O.pages[k]=false);O.pages.op_resol=false;(PRESET_FRONT[ev]||[]).forEach(k=>O.pages[k]=true);
+  if(ev==="family"){O.family=true;if(!O.kids.length)O.kids.push(newKid());}
+  if(ev==="newyear"){const y=(parseD(O.start)||new Date()).getUTCFullYear();O.start=`${y}-01-01`;}
+}
+
+let O=defaults(),STEP=0,SENT=false,MSG="";
+try{const s=JSON.parse(localStorage.getItem("journal-order-v2")||"null");if(s&&s.v===2){const d=defaults();O=Object.assign(d,s);O.pages=Object.assign(defaults().pages,s.pages||{});
+  O.persona=Object.assign({owner:{traits:[],note:""},partner:{traits:[],note:""}},s.persona||{});O.av=s.av||{};O.photos=s.photos||{};}}catch(e){}
+function save(){try{localStorage.setItem("journal-order-v2",JSON.stringify(O));}catch(e){}}
+
+/* ================= language ================= */
+const t=k=>(T[O.ui]&&T[O.ui][k])??T.en[k]??k;
+const LD=()=>DATA.L[O.ui]||DATA.L.en;
+const G=k=>LD().g[k]||DATA.L.en.g[k]||[k,""];
+const TR=k=>LD().tr[k]||DATA.L.en.tr[k];
+const occName=(ty,l)=>cap(((l?DATA.L[l]:LD()).occ||{})[ty]||ty);
+const LOC={en:"en-GB",ar:"ar-EG",fr:"fr-FR",es:"es-ES",de:"de-DE"};
+function applyLang(){
+  document.documentElement.lang=O.ui;document.documentElement.dir=O.ui==="ar"?"rtl":"ltr";
+  $("homeT").textContent=t("home");$("home").style.visibility=/claude|^$|localhost/.test(location.hostname)?"hidden":"visible";$("hTag").textContent=t("tag");$("hH1").textContent=t("h1");$("hP").textContent=t("hp");$("back").textContent=t("back");document.title=t("h1");
+}
+
+/* ================= page count (mirrors Journal Studio) ================= */
+let START,END;
+function periods(){
+  START=parseD(O.start)||parseD(todayISO());
+  const n=+O.length||12,y=START.getUTCFullYear(),m=START.getUTCMonth()+n,d=START.getUTCDate(),x=new Date(Date.UTC(y,m,1)),dim=daysIn(x.getUTCFullYear(),x.getUTCMonth()+1);
+  const next=d>dim?new Date(Date.UTC(x.getUTCFullYear(),x.getUTCMonth()+1,1)):new Date(Date.UTC(x.getUTCFullYear(),x.getUTCMonth(),d));END=new Date(next-864e5);
+  const P=[];let yy=START.getUTCFullYear(),mm=START.getUTCMonth()+1;
+  while(Date.UTC(yy,mm-1,1)<=END.getTime()){
+    const a=(yy===START.getUTCFullYear()&&mm===START.getUTCMonth()+1)?START.getUTCDate():1;
+    const b=(yy===END.getUTCFullYear()&&mm===END.getUTCMonth()+1)?END.getUTCDate():daysIn(yy,mm);
+    P.push([yy,mm,a,b]);if(mm===12){yy++;mm=1;}else mm++;}
+  return P;
+}
+function nextOccur(s){const d=parseD(s);if(!d)return null;
+  for(const y of [START.getUTCFullYear(),START.getUTCFullYear()+1,START.getUTCFullYear()+2]){const x=new Date(Date.UTC(y,d.getUTCMonth(),Math.min(d.getUTCDate(),daysIn(y,d.getUTCMonth()+1))));if(x>=START&&x<=END)return x;}return null;}
+const evRaw=()=>O.event==="birthday"?(O.eventDate||O.ownerBday):O.eventDate;
+const evD=()=>{const r=evRaw(),d=parseD(r);if(!d)return null;return ["birthday","anniversary"].includes(O.event)?(nextOccur(r)||d):d;};
+function occasions(){
+  const o=[],seen=new Set(),bd=[];
+  const pb=(x,name)=>{if(x&&x>=START&&x<=END&&!bd.find(b=>iso(b.date)===iso(x)&&b.name===name))bd.push({date:x,name});};
+  if(O.event==="birthday"&&evRaw())pb(evD(),O.owner);
+  if(O.ownerBday)pb(nextOccur(O.ownerBday),O.owner);
+  if(O.couple&&O.partnerBday)pb(nextOccur(O.partnerBday),O.partner);
+  if(O.family)O.kids.forEach(k=>{if(k.birthday)pb(nextOccur(k.birthday),k.name);});
+  O.specials.forEach(d=>{if(d.type==="birthday")pb(nextOccur(d.date)||parseD(d.date),d.label||"");});
+  const push=(type,date,label)=>{if(!date||date<START||date>END)return;const id=type+iso(date)+(label||"");if(seen.has(id))return;seen.add(id);o.push({type,date,label});};
+  bd.forEach(b=>push("birthday",b.date,b.name));
+  const eo=EVENT_OCC[O.event];if(O.eventDate&&O.event&&eo!=="birthday")push(eo,evD(),"");
+  O.specials.forEach(d=>{if(d.type==="birthday")return;const ty=d.type||"other";push(ty,ty==="anniversary"?(nextOccur(d.date)||parseD(d.date)):parseD(d.date),d.label||"");});
+  return o.sort((a,b)=>a.date-b.date);
+}
+function countPages(){
+  const P=O.pages,per=periods(),occ=occasions(),e=evD(),eIn=e&&e>=START&&e<=END;let n=0;
+  const fam=O.family&&O.kids.length>0;
+  if(P.fp_belongs)n++;if(P.fp_guide)n++;if(P.fp_glance)n++;if(P.fp_countdown&&eIn)n++;
+  TRACKERS.forEach(x=>{if(P[x.k])n++;});
+  n+=O.customTrackers.filter(c=>(c.title||"").trim()).length;
+  FAMFRONT.forEach(k=>{if(P[k]&&O.family)n++;});if(P.op_resol)n++;
+  if(n%2)n++;
+  per.forEach(([y,m,a,b],idx)=>{
+    let c=0;const last=idx===per.length-1&&idx>0&&(a!==1||b!==daysIn(y,m));
+    const full=["mp_habits","mp_sleep","mp_coffee","mp_self","mp_doodle","mp_high","mp_movies","mp_series","mp_play","mp_notes"];
+    ["mp_cover","mp_cal","mp_mood","mp_grat"].forEach(k=>{if(P[k])c++;});
+    if(!last){full.forEach(k=>{if(P[k])c++;});if(fam&&P.mp_chores)c++;}
+    occ.filter(o=>o.date.getUTCFullYear()===y&&o.date.getUTCMonth()+1===m).forEach(o=>(OCC_SET[o.type]||OCC_SET.other).forEach(pk=>{if(P["oc_"+o.type+"_"+pk]!==false)c++;}));
+    if(c%2)c++;n+=c;});
+  if(P.sp_review)n++;if(n%2)n++;
+  return n;
+}
+function priceOf(){
+  const pages=countPages(),sheets=Math.ceil(pages/2);
+  let j=SHOP.coverAndBinding+sheets*SHOP.perSheet;j=Math.round(j/SHOP.roundTo)*SHOP.roundTo;j=Math.max(j,SHOP.minimum);
+  const add=SHOP.addons.filter(a=>O.addons.includes(a.id)).reduce((s,a)=>s+a.price,0);
+  return {pages,sheets,journal:j,add,total:j+add};
+}
+let lastTotal=null;
+function updateBar(){
+  const p=priceOf();$("pTotal").textContent=money(p.total);$("pInfo").textContent=`${p.pages} ${t("pages")} · ${O.length} ${t("months")}`;
+  if(lastTotal!==null&&lastTotal!==p.total){const b=$("pTotal");b.classList.remove("bump");void b.offsetWidth;b.classList.add("bump");}
+  lastTotal=p.total;save();MSG="";{const rw=$("rangeWarn");if(rw)rw.textContent=rangeWarn();}if(STEP===STEPS.length-1)message().then(m=>MSG=m);
+}
+function monthlyHint(){const n=periods().length;return t("about")+" +"+money(Math.round(n/2*SHOP.perSheet));}
+
+/* ================= steps ================= */
+const STEPS=[stepOccasion,stepPeople,stepDates,stepPages,stepTrackers,stepFinish];
+function go(i){STEP=Math.max(0,Math.min(STEPS.length-1,i));render();window.scrollTo({top:0,behavior:"smooth"});}
+function render(){
+  applyLang();
+  $("steps").innerHTML=STEPS.map((_,i)=>`<i class="${i<=STEP?"on":""}"></i>`).join("");
+  $("view").innerHTML=STEPS[STEP]();bindView();updateBar();
+  $("back").style.visibility=STEP?"visible":"hidden";
+  $("next").textContent=STEP===STEPS.length-1?t("send"):t("next");
+  $("next").className="btn "+(STEP===STEPS.length-1?"g":"p");
+}
+function check(i){
+  if(i===0&&!O.event)return t("e_event");
+  if(i===1){if(!O.owner.trim())return t("e_owner");if(O.couple&&!O.partner.trim())return t("e_partner");if(O.family&&O.kids.some(k=>!k.name.trim()))return t("e_kid");}
+  if(i===2){if(!parseD(O.start))return t("e_start");if(["wedding","engagement","anniversary","graduation"].includes(O.event)&&!O.eventDate)return t("e_key");
+    if(O.event==="birthday"&&!O.eventDate&&!O.ownerBday)return t("e_bday");}
+  if(i===5){if(!O.buyer.trim())return t("e_buyer");if(O.phone.replace(/\D/g,"").length<8)return t("e_phone");if(!O.city.trim()||O.address.trim().length<5)return t("e_addr");}
+  return "";
+}
+function stepOccasion(){
+  return `<div class="card"><h2>${t("s1h")}</h2><p class="sub">${t("s1p")}</p>
+  <div class="grid">${EVENTS.map(k=>`<button class="opt ${O.event===k?"on":""}" data-ev="${k}"><b>${t("ev_"+k)}</b><span>${t("evd_"+k)}</span></button>`).join("")}</div>
+  <div class="err" id="err"></div></div>`;
+}
+const gSeg=(id,val,a,b)=>`<div class="seg" data-seg="${id}"><button data-v="f" class="${val==="f"?"on":""}">${a||t("female")}</button><button data-v="m" class="${val==="m"?"on":""}">${b||t("male")}</button></div>`;
+/* ---------- character builder ---------- */
+const FACE_KEYS=["skin","faceShape","hair","hairColor","eyes","brows","lashes","blush","facial","glasses","hijabColor","body"];
+const HIJABC=["#c9a6b8","#1f2a44","#e8d3c0","#7a8a6a","#3b2418","#f2efe6","#b33a3a","#2b2b2b","#5b8fc7"];
+const gOf=who=>who==="owner"?O.ownerG:who==="partner"?O.partnerG:(O.kids[+who.slice(3)]||{}).g||"f";
+function kidYears(k){const b=parseD(k&&k.birthday),st=parseD(O.start)||new Date();if(!b)return null;let y=st.getUTCFullYear()-b.getUTCFullYear();
+  if(st.getUTCMonth()<b.getUTCMonth()||(st.getUTCMonth()===b.getUTCMonth()&&st.getUTCDate()<b.getUTCDate()))y--;return y;}
+const isKid=who=>{if(!who.startsWith("kid"))return false;const y=kidYears(O.kids[+who.slice(3)]);return !(y!==null&&y>=18);};
+function faceOf(who){const g=gOf(who),d=AV.defaults(g,isKid(who)?"kid":undefined),src=srcAv(who);
+  const f={};FACE_KEYS.forEach(k=>f[k]=src&&src[k]!==undefined?src[k]:d[k]);return f;}
+function setFace(who,k,v){const f=faceOf(who),o=(srcAv(who)||{}).outfit;if(o)f.outfit=o;f[k]=v;if(who.startsWith("kid"))O.kids[+who.slice(3)].av=f;else O.av[who]=f;save();}
+function srcAv(who){return who.startsWith("kid")?(O.kids[+who.slice(3)]||{}).av:O.av[who];}
+function fullAv(who,over){const g=gOf(who),p=Object.assign(AV.defaults(g,isKid(who)?"kid":undefined),faceOf(who),over||{}),o=(srcAv(who)||{}).outfit;
+  if(o)p.looks.everyday=Object.assign({},p.looks.everyday,o);return p;}
+const svgUrl=x=>"data:image/svg+xml;charset=utf-8,"+encodeURIComponent(x);
+const headUrl=(who,over)=>svgUrl(AV.svgHead(fullAv(who,over),"happy"));
+function charBlock(who){const f=faceOf(who),hij=f.hair==="hijab",male=gOf(who)==="m";
+  const sw=(k,list)=>`<div class="os">${list.map(c=>`<button type="button" class="sw ${f[k]===c?"on":""}" style="background:${c}" data-face="${who}|${k}|${c}"></button>`).join("")}</div>`;
+  const th=(k,list)=>`<div class="os">${list.map(v=>`<button type="button" class="th ${f[k]===v?"on":""}" data-face="${who}|${k}|${v}"><img loading="lazy" alt="" src="${headUrl(who,{[k]:v})}"></button>`).join("")}</div>`;
+  const hairs=AV.OPT.hair.map(h=>h[0]).filter(h=>!(isKid(who)&&h==="bald"));
+  return `<div class="cb" id="cb-${who}"><img class="cprev" alt="" src="${svgUrl(AV.svgBody(fullAv(who),"everyday"))}">
+  <details ${CB_OPEN.has(who)?"open":""} data-cbd="${who}"><summary>${t("design")}</summary>
+  ${SAMPLE_OK?`<label class="mini" style="margin:4px 0">${t("usePhoto")}<input type="file" accept="image/*" data-pphoto="${who}" hidden></label><div class="ol" id="pst-${who}">${PST[who]||t("usePhotoHint")}</div>`:""}
+  <div class="ol">${t("skin")}</div>${sw("skin",AV.SKINS)}
+  <div class="ol">${t("hairStyle")}</div>${th("hair",hairs)}
+  ${hij?`<div class="ol">${t("hijabColor")}</div>${sw("hijabColor",HIJABC)}`:`<div class="ol">${t("hairColor")}</div>${sw("hairColor",AV.HAIRC)}`}
+  <div class="ol">${t("eyes")}</div>${sw("eyes",AV.EYEC)}
+  <div class="ol">${t("glasses")}</div>${th("glasses",AV.OPT.glasses.map(x=>x[0]))}
+  ${male&&!isKid(who)?`<div class="ol">${t("beard")}</div>${th("facial",AV.OPT.facial.map(x=>x[0]))}`:""}
+  <div class="ol">${t("faceShape")}</div>${th("faceShape",AV.OPT.faceShape.map(x=>x[0]))}
+  </details></div>`;}
+const CB_OPEN=new Set(["owner"]);
+/* ---------- photos sent with the order (uploaded to the shop's Google Drive) ---------- */
+const UPLOAD=(SHOP.photoUpload||"").trim(),PH={};   // PH[who]={url,state:"up"|"ok"|"err",file}
+function photoName(who){const nm=who==="group"?"everyone":nameOf(who);const role=who.startsWith("kid")?"child"+(+who.slice(3)+1):who;
+  return (role+"-"+(nm||"")).replace(/[\\/:*?"<>|.]+/g,"").trim().replace(/-$/,"").slice(0,60);}
+function photoRow(who){if(!UPLOAD)return "";const p=PH[who],sent=!!O.photos[who];
+  const st=p&&p.state==="up"?t("phUp"):p&&p.state==="err"?t("phErr"):sent?t("phSent"):t("photoHint");
+  return `<label class="f">${t("photo")}</label><div class="ph" id="ph-${who}">${p&&p.url?`<img src="${p.url}" alt="">`:`<span class="em">${sent?"✓":"+"}</span>`}
+  <div><label class="mini">${sent||p?t("changePhoto"):t("addPhoto")}<input type="file" accept="image/*" data-up="${who}" hidden></label><small ${p&&p.state==="err"?'style="color:#b4462f"':""}>${st}</small></div></div>`;}
+function redrawPhoto(who){const el=$("ph-"+who);if(!el)return;const w=document.createElement("div");w.innerHTML=photoRow(who);const lab=el.previousElementSibling;if(lab&&lab.classList.contains("f"))lab.remove();
+  el.replaceWith(...w.childNodes);bindUploads($("view"));}
+async function uploadPhoto(who,file){if(!file||!UPLOAD)return;if(PH[who]&&PH[who].url)URL.revokeObjectURL(PH[who].url);
+  PH[who]={url:URL.createObjectURL(file),state:"up"};redrawPhoto(who);const mine=PH[who];
+  try{const img=await shrink(file).catch(()=>file),name=photoName(who);
+    const r=await fetch(UPLOAD,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({order:O.orderId,name,type:"image/jpeg",data:await blobB64(img)})});
+    const j=await r.json();if(!j||!j.ok)throw new Error("x");
+    if(PH[who]!==mine)return;mine.state="ok";O.photos[who]=name;if(j.folder)O.photoFolder=j.folder;save();
+  }catch(e){if(PH[who]!==mine)return;mine.state="err";}
+  redrawPhoto(who);updateBar();}
+function bindUploads(root){root.querySelectorAll("[data-up]").forEach(e=>e.onchange=()=>{const f=e.files[0];e.value="";uploadPhoto(e.dataset.up,f);});}
+const photoList=()=>Object.keys(O.photos).filter(w=>w==="group"?(O.couple||O.family):w==="partner"?O.couple:w.startsWith("kid")?(O.family&&O.kids[+w.slice(3)]):true);
+const uploading=()=>Object.values(PH).some(p=>p.state==="up");
+/* ---------- photo to character (asks Claude, when this view allows it) ---------- */
+let SAMPLE=null,SAMPLE_OK=false;const PST={};
+(async()=>{try{if(window.claude&&window.claude.use){const sm=await window.claude.use("sample");if(sm){let ok=true;try{const l=await sm.limits();ok=!!(l&&l.images);}catch(e){}
+  if(ok){SAMPLE=sm;SAMPLE_OK=true;if(STEP===1)render();}}}}catch(e){}})();
+const RELAY=(SHOP.photoApi||"").trim();if(RELAY)SAMPLE_OK=true;
+const blobB64=b=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(",")[1]||"");r.onerror=()=>rej(new Error("x"));r.readAsDataURL(b);});
+async function relay(body,img){let r;try{r=await fetch(RELAY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.assign(body,{image:await blobB64(img)}))});}catch(e){throw {code:"fail"};}
+  if(r.status===429)throw {code:"rate_limited"};if(!r.ok)throw {code:"fail"};return r.json();}
+function shrink(file){return new Promise((res,rej)=>{const u=URL.createObjectURL(file),im=new Image();
+  im.onload=()=>{const k=Math.min(1,1200/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);
+    c.getContext("2d").drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(b=>b?res(b):rej(new Error("x")),"image/jpeg",.86);};
+  im.onerror=()=>{URL.revokeObjectURL(u);rej(new Error("x"));};im.src=u;});}
+const OPTL=k=>AV.OPT[k].map(x=>x[0]).join(", ");
+const FACE_JSON=`"skin": hex color closest to their skin tone, "faceShape": one of [${OPTL("faceShape")}], "hair": one of [${OPTL("hair")}] (use "hijab" if they wear a headscarf), "hairColor": hex, "hijabColor": hex or null, "eyes": hex eye color, "brows": "thin" or "thick", "facial": one of [${OPTL("facial")}], "glasses": one of [${OPTL("glasses")}],
+ "outfit": {"dress": one of [${OPTL("dress")}], "top": one of [${OPTL("top")}], "topColor": hex, "bottom": one of [${OPTL("bottom")}], "bottomColor": hex, "dressColor": hex or null, "shoes": one of [${OPTL("shoes")}]}`;
+function applyFace(who,x){if(!x)return false;const hex=v=>typeof v==="string"&&/^#[0-9a-f]{6}$/i.test(v),inL=(v,k)=>AV.OPT[k].some(o=>o[0]===v);
+  const f=faceOf(who);
+  if(hex(x.skin))f.skin=x.skin;if(inL(x.faceShape,"faceShape"))f.faceShape=x.faceShape;if(inL(x.hair,"hair"))f.hair=x.hair;if(hex(x.hairColor))f.hairColor=x.hairColor;
+  if(hex(x.hijabColor))f.hijabColor=x.hijabColor;if(hex(x.eyes))f.eyes=x.eyes;if(["thin","thick"].includes(x.brows))f.brows=x.brows;
+  if(!isKid(who)&&gOf(who)==="m"&&inL(x.facial,"facial"))f.facial=x.facial;if(inL(x.glasses,"glasses"))f.glasses=x.glasses;
+  const o=x.outfit||{},of={};["dress","top","bottom","shoes"].forEach(k=>{if(inL(o[k],k))of[k]=o[k];});["topColor","bottomColor","dressColor"].forEach(k=>{if(hex(o[k]))of[k]=o[k];});
+  if(of.dress&&of.dress!=="none"&&!of.dressColor)of.dressColor=of.topColor||"#c8a2c8";if(Object.keys(of).length)f.outfit=of;
+  if(who.startsWith("kid"))O.kids[+who.slice(3)].av=f;else O.av[who]=f;save();return true;}
+function photoErr(e){const c=e&&e.code;return c==="not_granted"?t("phNo"):c==="rate_limited"?t("phBusy"):t("phFail");}
+function redrawChar(who){const el=$("cb-"+who);if(!el)return;el.outerHTML=charBlock(who);const n=$("cb-"+who),d=n.querySelector("[data-cbd]");d.ontoggle=()=>{if(d.open)CB_OPEN.add(who);else CB_OPEN.delete(who);};bindFaces(n);}
+async function photoOne(who,file){if(!file||!SAMPLE_OK)return;CB_OPEN.add(who);PST[who]=t("phReading");redrawChar(who);
+  try{const img=await shrink(file).catch(()=>file);
+    const r=!SAMPLE?await relay({mode:"one"},img):await SAMPLE.json(`Look at the person in this photo and choose settings for a cute cartoon avatar of them, matching what they look like and what they are wearing. Reply with only a JSON object:
+{${FACE_JSON}}
+Pick the closest options. Do not identify the person; only describe appearance.`,{images:[img],modelTier:"default"});
+    PST[who]=applyFace(who,r)?t("phDone"):t("phFail");}catch(e){PST[who]=photoErr(e);}
+  redrawChar(who);}
+const members=()=>["owner",...(O.couple?["partner"]:[]),...(O.family?O.kids.map((k,i)=>"kid"+i):[])];
+const nameOf=w=>w==="owner"?O.owner:w==="partner"?O.partner:(O.kids[+w.slice(3)]||{}).name;
+async function photoGroup(file){if(!file||!SAMPLE_OK)return;const st=$("gst");st.textContent=t("phReading");
+  const mem=members().map(w=>{const g=gOf(w),y=w.startsWith("kid")?kidYears(O.kids[+w.slice(3)]):null;
+    return {id:w,name:nameOf(w)||"",role:w.startsWith("kid")?(isKid(w)?(g==="m"?"boy":"girl"):(g==="m"?"adult son":"adult daughter"))+(y!==null?`, about ${y}`:""):(g==="m"?"man":"woman")};});
+  try{const img=await shrink(file).catch(()=>file);
+    const r=!SAMPLE?await relay({mode:"group",family:!!O.family,members:members().map(w=>({id:w,g:gOf(w),kid:isKid(w),years:w.startsWith("kid")?kidYears(O.kids[+w.slice(3)]):null}))},img):await SAMPLE.json(`This photo shows a ${O.family?"family":"couple"}. These are the people to find (match each by role, age and position; names are only labels):
+${JSON.stringify(mem)}
+For each person you can see, choose settings for a cute cartoon avatar, matching what they look like and what they are wearing.
+Reply with only a JSON object keyed by the "id" values above (leave out anyone you cannot see), each value:
+{${FACE_JSON}, "where": short position like "left"}
+Pick the closest options. Do not identify anyone; only describe appearance.`,{images:[img],modelTier:"default"});
+    const done=[],miss=[];mem.forEach(m=>{if(r&&applyFace(m.id,r[m.id])){done.push(m.name||m.role);CB_OPEN.add(m.id);}else miss.push(m.name||m.role);});
+    render();const g=$("gst");if(g)g.textContent=done.length?t("phGroupDone").replace("{n}",done.join(", "))+(miss.length?" "+t("phMiss").replace("{n}",miss.join(", ")):""):t("phFail");
+  }catch(e){st.textContent=photoErr(e);}}
+function persRow(who,p){
+  return `<label class="f">${t("pers")}</label><div class="chips">${TRAITS.map(x=>`<button type="button" class="chip ${p.traits.includes(x)?"on":""}" data-trait="${who}|${x}">${t("tr_"+x)}</button>`).join("")}</div>
+  <label class="f">${t("persNote")}</label><textarea data-note="${who}">${esc(p.note)}</textarea>`;}
+function stepPeople(){
+  const kids=O.kids.map((k,i)=>`<div class="item"><div class="top"><b>${t("child")} ${i+1}</b><button class="x" data-krm="${i}">×</button></div>
+    <div class="row"><input type="text" placeholder="${t("namePh")}" data-kid="${i}" data-f="name" value="${esc(k.name)}"><select data-kid="${i}" data-f="g"><option value="f" ${k.g==="f"?"selected":""}>${isKid("kid"+i)?t("girl"):t("female")}</option><option value="m" ${k.g==="m"?"selected":""}>${isKid("kid"+i)?t("boy"):t("male")}</option></select></div>
+    <label class="f">${t("birthday")}</label><input type="date" data-kid="${i}" data-f="birthday" value="${k.birthday}">
+    ${photoRow("kid"+i)}${charBlock("kid"+i)}${persRow("kid"+i,k)}</div>`).join("");
+  return `<div class="card"><h2>${t("s2h")}</h2><p class="sub">${t("s2p")} ${t("persHint")}</p>
+  <div class="item"><b>${t("mainP")}</b>
+  <label class="f">${t("name")}</label><input type="text" id="owner" value="${esc(O.owner)}">
+  <div style="margin-top:8px">${gSeg("ownerG",O.ownerG)}</div>
+  <label class="f">${t("bday")}</label>${dmSel("ownerBday",O.ownerBday)}
+  ${photoRow("owner")}${charBlock("owner")}${persRow("owner",O.persona.owner)}</div>
+  <h3>${t("whoElse")}</h3>
+  <div class="seg" data-seg="couple"><button data-v="1" class="${O.couple?"on":""}">${t("withP")}</button><button data-v="0" class="${!O.couple?"on":""}">${t("just")}</button></div>
+  <div class="item ${O.couple?"":"hide"}"><b>${t("partner")}</b>
+  <label class="f">${t("name")}</label><input type="text" id="partner" value="${esc(O.partner)}">
+  <div style="margin-top:8px">${gSeg("partnerG",O.partnerG)}</div>
+  <label class="f">${t("bday")}</label>${dmSel("partnerBday",O.partnerBday)}
+  ${photoRow("partner")}${charBlock("partner")}${persRow("partner",O.persona.partner)}</div>
+  <label class="chk" style="margin-top:12px"><input type="checkbox" id="family" ${O.family?"checked":""}><span><b>${t("kidsOn")}</b><small>${t("kidsHint")}</small></span></label>
+  <div class="${O.family?"":"hide"}"><label class="f">${t("famName")}</label><input type="text" id="familyName" value="${esc(O.familyName)}">
+  ${kids}${O.kids.length<3?`<button class="mini" id="kidAdd">${t("addKid")}</button>`:""}</div>
+  ${SAMPLE_OK&&(O.couple||O.family)?`<div class="item"><b>${t("groupH")}</b><div class="sub" style="margin:2px 0 6px">${t("groupP2")}</div><label class="btn s" style="font-size:14px">${t("usePhoto")}<input type="file" accept="image/*" id="gphoto" hidden></label><div class="ol" id="gst"></div></div>`:""}
+  ${UPLOAD&&(O.couple||O.family)?`<div class="item"><b>${t("groupH")}</b><div class="sub" style="margin:2px 0 0">${t("groupP")}</div>${photoRow("group")}</div>`:""}
+  <div class="note">${UPLOAD?t("photoTip3"):SAMPLE_OK?t("photoTip2"):t("photoTip")}</div>
+  <div class="err" id="err"></div></div>`;
+}
+function stepDates(){
+  const sp=O.specials.map((d,i)=>`<div class="item"><div class="top"><b>${t("spN")} ${i+1}</b><button class="x" data-sprm="${i}">×</button></div>
+    <div class="row"><input type="date" data-sp="${i}" data-f="date" value="${d.date}"><select data-sp="${i}" data-f="type">${SPECIAL_TYPES.map(k=>`<option value="${k}" ${d.type===k?"selected":""}>${occName(k)}</option>`).join("")}</select></div>
+    <label class="f">${t("spWhat")}</label><input type="text" data-sp="${i}" data-f="label" value="${esc(d.label)}" placeholder="${t("spPh")}"></div>`).join("");
+  return `<div class="card"><h2>${t("s3h")}</h2><p class="sub">${t("s3p")}</p>
+  <div class="row"><div><label class="f">${t("start")}</label><input type="date" id="start" value="${O.start}"></div>
+  <div><label class="f">${t("length")}</label><select id="length">${[12,6,3].map(n=>`<option value="${n}" ${+O.length===n?"selected":""}>${n} ${t("months")}</option>`).join("")}</select></div></div>
+  ${KEY_EVENTS.includes(O.event)?`<label class="f">${t("key_"+O.event)}</label>${O.event==="birthday"?dmSel("eventDate",O.eventDate||O.ownerBday):`<input type="date" id="eventDate" value="${O.eventDate}">`}`:""}
+  <h3>${t("spH")}</h3><p class="sub">${t("spP")}</p>
+  ${sp}<button class="mini" id="spAdd">${t("spAdd")}</button>
+  <div class="err" id="rangeWarn"></div><div class="err" id="err"></div></div>`;
+}
+function dmSel(key,val){const d=parseD(val),mm=d?d.getUTCMonth()+1:0,dd=d?d.getUTCDate():0;
+  const mn=i=>new Date(Date.UTC(2000,i-1,1)).toLocaleDateString(LOC[O.ui],{month:"long",timeZone:"UTC"});
+  return `<div class="row"><select data-dm="${key}" data-p="d"><option value="">${t("day")}</option>${Array.from({length:31},(_,i)=>`<option value="${i+1}" ${dd===i+1?"selected":""}>${i+1}</option>`).join("")}</select>
+  <select data-dm="${key}" data-p="m"><option value="">${t("month")}</option>${Array.from({length:12},(_,i)=>`<option value="${i+1}" ${mm===i+1?"selected":""}>${mn(i+1)}</option>`).join("")}</select></div>`;}
+function rangeWarn(){periods();const out=d=>d&&(d<START||d>END);
+  if(["wedding","engagement","graduation"].includes(O.event)&&out(parseD(O.eventDate)))return t("outRange");
+  if(O.specials.some(d=>d.date&&!["birthday","anniversary"].includes(d.type)&&out(parseD(d.date))))return t("outRange");return "";}
+const chk=(k,title,desc,hint)=>`<label class="chk"><input type="checkbox" data-pg="${k}" ${O.pages[k]?"checked":""}><span><b>${esc(title)}</b>${desc?`<small>${esc(desc)}</small>`:""}</span>${hint?`<span class="pp">${hint}</span>`:""}</label>`;
+function stepPages(){
+  const occ=occasions(),types=[...new Set(occ.map(o=>o.type))],fam=O.family&&O.kids.length;
+  const e=evD(),eIn=e&&e>=START&&e<=END;
+  let s=`<div class="card"><h2>${t("s4h")}</h2><p class="sub">${t("s4p")} ${t("s4p2")}</p><h3>${t("front")}</h3>`;
+  s+=chk("fp_belongs",t("fp_belongs"),t("fpd_belongs"))+chk("fp_guide",t("fp_guide"),t("fpd_guide"))+chk("fp_glance",...G("fp_glance"));
+  if(eIn)s+=chk("fp_countdown",...G("fp_countdown"));
+  if(O.family)FAMFRONT.forEach(k=>s+=chk(k,...G(k)));
+  if(O.event==="newyear"||O.pages.op_resol)s+=chk("op_resol",...G("op_resol"));
+  s+=`<h3>${t("monthly")}</h3>`;
+  MONTHLY.forEach(k=>{if(k==="mp_chores"&&!fam)return;s+=chk(k,G(k)[0],G(k)[1]);});
+  if(types.length){s+=`<h3>${t("occP")}</h3><p class="sub">${t("occPp")}</p>`;
+    types.forEach(ty=>{const n=occ.filter(o=>o.type===ty).length;s+=`<div style="font-weight:600;margin:10px 0 2px">${occName(ty)}${n>1?` (${n} ${t("dates")})`:""}</div>`;
+      (OCC_SET[ty]||OCC_SET.other).forEach(pk=>s+=chk("oc_"+ty+"_"+pk,G(OCC_DESC[pk])[0],G(OCC_DESC[pk])[1],n>1?"x"+n:""));});}
+  s+=`<h3>${t("last")}</h3>`+chk("sp_review",...G("sp_review"));
+  return s+`</div>`;
+}
+function stepTrackers(){
+  const all=TRACKERS.filter(x=>!(x.who==="kids"&&!O.family)&&!(x.who==="solo"&&O.couple));
+  const cts=O.customTrackers.map((c,i)=>`<div class="item"><div class="top"><b>${t("myTr")} ${i+1}</b><button class="x" data-ctrm="${i}">×</button></div>
+    <input type="text" placeholder="${t("trPh")}" data-ct="${i}" data-f="title" value="${esc(c.title)}">
+    <label class="f">${t("trOpt")}</label><textarea data-ct="${i}" data-f="legend">${esc(c.legend)}</textarea></div>`).join("");
+  return `<div class="card"><h2>${t("s5h")}</h2><p class="sub">${t("s5p")}</p>
+  ${all.map(x=>chk(x.k,TR(x.k)[0],TR(x.k)[1].join(" · "),t("onePage"))).join("")}
+  <h3>${t("own")}</h3><p class="sub">${t("ownP")}</p>${cts}${O.customTrackers.length<4?`<button class="mini" id="ctAdd">${t("trAdd")}</button>`:""}</div>`;
+}
+const waUrl=()=>"https://wa.me/"+SHOP.whatsapp+"?text="+encodeURIComponent(MSG);
+function stepFinish(){
+  const p=priceOf(),occ=occasions(),loc=LOC[O.ui];
+  const people=[O.owner,O.couple?O.partner:"",...(O.family?O.kids.map(k=>k.name):[])].filter(Boolean).join(O.ui==="ar"?"، ":", ");
+  const adds=SHOP.addons.map(a=>`<label class="chk"><input type="checkbox" data-add="${a.id}" ${O.addons.includes(a.id)?"checked":""}><span><b>${esc(a.label)}</b>${a.desc?`<small>${esc(a.desc)}</small>`:""}</span><span class="pp">+${money(a.price)}</span></label>`).join("");
+  const sent=SENT?`<div class="card done"><h2>${t("sentH")}</h2><p class="sub">${t("sentP")}</p>
+    ${SHOP.whatsapp?`<a class="btn g" id="waLink" target="_blank" rel="noopener" href="#">${t("openWa")}</a> `:""}<button class="mini" id="newOrder">${t("newOrder")}</button></div>`:"";
+  return sent+`<div class="card"><h2>${t("s6h")}</h2>
+  <label class="f">${t("jlang")}</label><select id="lang">${LANGS.map(([k,l])=>`<option value="${k}" ${O.lang===k?"selected":""}>${l}</option>`).join("")}</select>
+  <label class="f">${t("week")}</label><select id="weekStart"><option value="6" ${+O.weekStart===6?"selected":""}>${t("sun")}</option><option value="0" ${+O.weekStart===0?"selected":""}>${t("mon")}</option><option value="5" ${+O.weekStart===5?"selected":""}>${t("sat")}</option></select>
+  ${SHOP.addons.length?`<h3>${t("extras")}</h3>${adds}`:""}
+  <label class="f">${t("notes")}</label><textarea id="notes">${esc(O.notes)}</textarea></div>
+  <div class="card"><h2>${t("delivH")}</h2><p class="sub">${t("delivNote")}</p>
+  <label class="f">${t("yourName")}</label><input type="text" id="buyer" value="${esc(O.buyer)}" autocomplete="name">
+  <label class="f">${t("phone")}</label><input type="text" inputmode="tel" id="phone" value="${esc(O.phone)}" autocomplete="tel" dir="ltr">
+  <label class="f">${t("city")}</label><input type="text" id="city" value="${esc(O.city)}">
+  <label class="f">${t("address")}</label><textarea id="address" autocomplete="street-address">${esc(O.address)}</textarea>
+  <div class="err" id="err"></div></div>
+  <div class="card"><h2>${t("orderH")}</h2><table class="sum">
+  <tr><td>${t("occasion")}</td><td>${t("ev_"+O.event)}</td></tr>
+  <tr><td>${t("characters")}</td><td>${esc(people)}</td></tr>
+  <tr><td>${t("datesL")}</td><td>${longD(START,loc)} ${t("to")} ${longD(END,loc)}</td></tr>
+  <tr><td>${t("specials")}</td><td>${occ.length||t("none")}</td></tr>
+  ${UPLOAD?`<tr><td>${t("photos")}</td><td>${photoList().length||t("none")}</td></tr>`:""}
+  ${O.city.trim()?`<tr><td>${t("delivH")}</td><td>${esc(O.city)}</td></tr>`:""}
+  <tr><td>${t("journal")} (${p.pages} ${t("pages")}, A5)</td><td>${money(p.journal)}</td></tr>
+  ${SHOP.addons.filter(a=>O.addons.includes(a.id)).map(a=>`<tr><td>${esc(a.label)}</td><td>${money(a.price)}</td></tr>`).join("")}
+  <tr class="t"><td>${t("total")}</td><td>${money(p.total)}</td></tr></table>
+  <div class="sub" style="margin-top:6px">${t("plusDeliv")}</div>
+  <div class="note">${t("sendNote")}</div>
+  <button class="mini" id="copy">${t("copy")}</button> <span id="copied" class="sub"></span></div>`;
+}
+
+/* ================= binding ================= */
+function bindFaces(root){root.querySelectorAll("[data-pphoto]").forEach(e=>e.onchange=()=>{photoOne(e.dataset.pphoto,e.files[0]);e.value="";});
+  root.querySelectorAll("[data-face]").forEach(b=>b.onclick=()=>{const [who,k,val]=b.dataset.face.split("|");setFace(who,k,val);
+  const el=$("cb-"+who),sc=[...el.querySelectorAll(".os")].map(x=>x.scrollLeft);el.outerHTML=charBlock(who);const n=$("cb-"+who);
+  n.querySelectorAll(".os").forEach((x,i)=>x.scrollLeft=sc[i]||0);const d=n.querySelector("[data-cbd]");d.ontoggle=()=>{if(d.open)CB_OPEN.add(who);else CB_OPEN.delete(who);};bindFaces(n);});}
+const persOf=who=>who.startsWith("kid")?O.kids[+who.slice(3)]:O.persona[who];
+function bindView(){
+  $("view").oninput=$("view").onchange=()=>{const er=$("err");if(er&&er.textContent)er.textContent="";};
+  const v=$("view"),q=s=>v.querySelectorAll(s),on=(id,f)=>{const e=$(id);if(e)e.oninput=f;};
+  q("[data-ev]").forEach(b=>b.onclick=()=>{applyEvent(b.dataset.ev);render();});
+  q("[data-seg]").forEach(sg=>sg.querySelectorAll("button").forEach(b=>b.onclick=()=>{const k=sg.dataset.seg,val=b.dataset.v;if(k==="couple")O.couple=val==="1";else{O[k]=val;if(k==="ownerG")delete O.av.owner;if(k==="partnerG")delete O.av.partner;}render();}));
+  ["owner","partner","familyName","buyer","phone","city","address","notes","start","eventDate"].forEach(k=>on(k,e=>{O[k]=e.target.value;updateBar();}));
+  on("length",e=>{O.length=+e.target.value;updateBar();});on("lang",e=>{O.lang=e.target.value;updateBar();});on("weekStart",e=>{O.weekStart=+e.target.value;updateBar();});
+  const fam=$("family");if(fam)fam.onchange=()=>{O.family=fam.checked;if(O.family&&!O.kids.length)O.kids.push(newKid());render();};
+  const ka=$("kidAdd");if(ka)ka.onclick=()=>{O.kids.push(newKid());render();};
+  q("[data-krm]").forEach(b=>b.onclick=()=>{[0,1,2].forEach(j=>{if(j>=+b.dataset.krm){delete PH["kid"+j];delete O.photos["kid"+j];}});O.kids.splice(+b.dataset.krm,1);if(!O.kids.length)O.family=false;render();});
+  q("[data-kid]").forEach(e=>e.oninput=()=>{const k=O.kids[+e.dataset.kid];k[e.dataset.f]=e.value;if(e.dataset.f==="g"){k.av=null;render();return;}if(e.dataset.f==="birthday"){const w="kid"+e.dataset.kid,el=$("cb-"+w);if(el){el.outerHTML=charBlock(w);bindFaces($("cb-"+w));}}updateBar();});
+  q("[data-dm]").forEach(e=>e.onchange=()=>{const k=e.dataset.dm,d=+v.querySelector(`[data-dm="${k}"][data-p="d"]`).value,m=+v.querySelector(`[data-dm="${k}"][data-p="m"]`).value;
+    O[k]=d&&m?`2000-${pad(m)}-${pad(Math.min(d,daysIn(2000,m)))}`:"";updateBar();});
+  q("[data-cbd]").forEach(d=>d.ontoggle=()=>{if(d.open)CB_OPEN.add(d.dataset.cbd);else CB_OPEN.delete(d.dataset.cbd);});
+  bindFaces(v);bindUploads(v);
+  const gp=$("gphoto");if(gp)gp.onchange=()=>{photoGroup(gp.files[0]);gp.value="";};
+  q("[data-trait]").forEach(b=>b.onclick=()=>{const [who,x]=b.dataset.trait.split("|"),p=persOf(who);if(!p)return;
+    if(p.traits.includes(x))p.traits=p.traits.filter(y=>y!==x);else if(p.traits.length<3)p.traits.push(x);
+    b.parentNode.querySelectorAll(".chip").forEach(c=>c.classList.toggle("on",p.traits.includes(c.dataset.trait.split("|")[1])));save();});
+  q("[data-note]").forEach(e=>e.oninput=()=>{const p=persOf(e.dataset.note);if(p){p.note=e.value;save();}});
+  const sa=$("spAdd");if(sa)sa.onclick=()=>{O.specials.push({date:"",type:"birthday",label:""});render();};
+  q("[data-sprm]").forEach(b=>b.onclick=()=>{O.specials.splice(+b.dataset.sprm,1);render();});
+  q("[data-sp]").forEach(e=>e.oninput=()=>{O.specials[+e.dataset.sp][e.dataset.f]=e.value;updateBar();});
+  q("[data-pg]").forEach(e=>e.onchange=()=>{O.pages[e.dataset.pg]=e.checked;updateBar();});
+  const ca=$("ctAdd");if(ca)ca.onclick=()=>{O.customTrackers.push({title:"",legend:""});render();};
+  q("[data-ctrm]").forEach(b=>b.onclick=()=>{O.customTrackers.splice(+b.dataset.ctrm,1);render();});
+  q("[data-ct]").forEach(e=>e.oninput=()=>{O.customTrackers[+e.dataset.ct][e.dataset.f]=e.value;updateBar();});
+  q("[data-add]").forEach(e=>e.onchange=()=>{const id=e.dataset.add;O.addons=O.addons.filter(x=>x!==id);if(e.checked)O.addons.push(id);render();});
+  const cp=$("copy");if(cp)cp.onclick=async()=>{const m=MSG||await message();try{await navigator.clipboard.writeText(m);$("copied").textContent=t("copied");}catch(e){prompt(t("copy"),m);}};
+  const no=$("newOrder");if(no)no.onclick=()=>{const keep={ui:O.ui,lang:O.lang,buyer:O.buyer,phone:O.phone,city:O.city,address:O.address};O=Object.assign(defaults(),keep);for(const k in PH)delete PH[k];SENT=false;go(0);};
+  const wl=$("waLink");if(wl)wl.onclick=()=>{wl.href=waUrl();};
+}
+$("back").onclick=()=>go(STEP-1);
+$("next").onclick=async()=>{
+  const e=check(STEP);if(e){const er=$("err");if(er){er.textContent=e;er.scrollIntoView({block:"center",behavior:"smooth"});}return;}
+  if(STEP<STEPS.length-1){go(STEP+1);return;}
+  for(let i=0;i<STEPS.length;i++){const m=check(i);if(m){go(i);setTimeout(()=>{const er=$("err");if(er)er.textContent=m;},50);return;}}
+  if(uploading()){const er=$("err");if(er){er.textContent=t("phWait");er.scrollIntoView({block:"center",behavior:"smooth"});}return;}
+  if(!MSG)MSG=await message();
+  if(UPLOAD&&O.photoFolder)try{fetch(UPLOAD,{method:"POST",keepalive:true,headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({order:O.orderId,action:"name",label:[O.owner,O.buyer,O.city].filter(Boolean).join(" - ")})}).catch(()=>{});}catch(e){}
+  if(SHOP.whatsapp)window.open(waUrl(),"_blank","noopener");
+  else{try{await navigator.clipboard.writeText(MSG);}catch(x){}}
+  SENT=true;const keep=MSG;render();MSG=keep;window.scrollTo({top:0,behavior:"smooth"});
+  if(!SHOP.whatsapp){const c=$("copied");if(c)c.textContent=t("copied");}
+};
+$("ui").innerHTML=LANGS.map(([k,l])=>`<option value="${k}">${l}</option>`).join("");$("ui").value=O.ui;
+$("ui").onchange=()=>{const nl=$("ui").value;O.ui=nl;O.lang=nl;if(nl==="ar"&&!O.weekStart)O.weekStart=5;else if(nl!=="ar"&&O.weekStart===5)O.weekStart=0;render();};
+
+/* ================= order code ================= */
+async function encode(obj){
+  const raw=new TextEncoder().encode(JSON.stringify(obj));
+  const b64=u=>{let s="";u.forEach(c=>s+=String.fromCharCode(c));return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");};
+  try{const cs=new CompressionStream("deflate-raw");const buf=await new Response(new Blob([raw]).stream().pipeThrough(cs)).arrayBuffer();return "JS1."+b64(new Uint8Array(buf));}
+  catch(e){return "JS0."+b64(raw);}
+}
+async function message(){
+  const p=priceOf(),occ=occasions(),E=T.en;
+  const o=JSON.parse(JSON.stringify(O));delete o.ui;const pl=photoList();o.photos=pl.map(w=>O.photos[w]);if(!pl.length){delete o.photoFolder;}o.price=p.total;o.pageCount=p.pages;const fo=w=>{const f=faceOf(w),x=(srcAv(w)||{}).outfit;if(x)f.outfit=x;return f;};o.av={};["owner","partner"].forEach(w=>{if(O.av[w])o.av[w]=fo(w);});o.kids=(o.kids||[]).map((k,i)=>Object.assign(k,{av:fo("kid"+i)}));
+  if(!o.couple){o.partner="";o.partnerBday="";o.persona.partner={traits:[],note:""};}
+  if(!o.family)o.kids=[];
+  o.pagesOn=Object.keys(o.pages).filter(k=>o.pages[k]);o.pagesOff=Object.keys(o.pages).filter(k=>!o.pages[k]);delete o.pages;
+  const code=await encode(o);
+  const people=[O.owner,O.couple?O.partner:"",...(O.family?O.kids.map(k=>k.name):[])].filter(Boolean).join(", ");
+  const lines=[`Hi! I'd like to order a personalised journal.`,``,
+    `Occasion: ${E["ev_"+O.event]||""}`,`Characters: ${people}`,`Dates: ${longD(START)} to ${longD(END)}`,
+    occ.length?`Special days: ${occ.map(x=>`${x.type==="birthday"&&x.label?x.label+" birthday":(x.label||occName(x.type,"en"))} (${longD(x.date)})`).join(", ")}`:null,
+    `Language: ${(LANGS.find(l=>l[0]===O.lang)||[,""])[1]}`,`Pages: ${p.pages}`,
+    O.addons.length?`Extras: ${SHOP.addons.filter(a=>O.addons.includes(a.id)).map(a=>a.label).join(", ")}`:null,
+    `Total: ${money(p.total)} (before delivery)`,``,`Deliver to: ${O.buyer}, ${O.phone}`,`${O.city}: ${O.address.replace(/\s*\n\s*/g,", ")}`,O.notes.trim()?`Notes: ${O.notes.trim().replace(/\s*\n\s*/g," / ")}`:null,``,
+    pl.length&&O.photoFolder?`Photos (${pl.length}): ${O.photoFolder}`:null,pl.length&&O.photoFolder?``:null,
+`Order code: ${code}`];
+  return lines.filter(l=>l!==null).join("\n");
+}
+render();
+</script>
+</body>
+</html>
