@@ -697,7 +697,7 @@ function body(p,lk,kid,look){
   s+=accessories(p,lk,"hands",pose);
   return s;
 }
-const AGES={baby:{b:.40,h:.80,e:1.22,x:1.2},toddler:{b:.50,h:.85,e:1.15,x:1.12},kid:{b:.62,h:.90,e:1.08,x:1},preteen:{b:.74,h:.93,e:1.04,x:.96},teen:{b:.88,h:.96,e:1.02,x:.96},young:{b:1,h:1,e:1,x:1},adult:{b:1,h:1,e:1,x:1},senior:{b:.97,h:1,e:.96,x:1}};
+const AGES={baby:{b:.30,h:.72,e:1.24,x:1.25},toddler:{b:.42,h:.80,e:1.16,x:1.14},kid:{b:.58,h:.88,e:1.08,x:1},preteen:{b:.74,h:.93,e:1.04,x:.96},teen:{b:.88,h:.96,e:1.02,x:.96},young:{b:1,h:1,e:1,x:1},adult:{b:1,h:1,e:1,x:1},senior:{b:.97,h:1,e:.96,x:1}};
 const BUILDS={slim:.86,average:1,curvy:1.08,athletic:1.14,plus:1.32};
 const HEIGHTS={short:.93,average:1,tall:1.04};
 function ageOf(p){return AGES[p.ageGroup]?p.ageGroup:(p.age==="kid"?"kid":"adult");}
@@ -706,7 +706,7 @@ function bodyOf(p){return p.build==="curvy"||p.build==="plus"?"soft":p.build==="
 function svgBody(p,look){
   const lk=Object.assign({acc:[]},p.looks[look]||p.looks.everyday);
   const pose=poseOf(lk,look),tilt=pose.tilt;
-  const A=AGES[ageOf(p)],pb=Object.assign({},p,{body:bodyOf(p)});
+  const A=AGES[ageOf(p)],pb=Object.assign({},p,{body:bodyOf(p)});if(ageOf(p)==="baby"&&!["tuft","bald","buzz","hijab"].includes(pb.hair))pb.hair="tuft";
   const bs=A.b*(HEIGHTS[p.height]||1), bx=bs*A.x*(BUILDS[p.build]||1), hs=A.h, dy=(ANK-190)*(1-bs);
   const H=`translate(100 178) scale(${hs}) translate(-100 -178)`, B=`translate(100 190) scale(${bx} ${bs}) translate(-100 -190)`;
   const Hj=bs<.8?`translate(100 178) scale(${hs} ${hs*.82}) translate(-100 -178)`:H;
