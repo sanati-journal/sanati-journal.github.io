@@ -697,11 +697,13 @@ function body(p,lk,kid,look){
   s+=accessories(p,lk,"hands",pose);
   return s;
 }
-const AGES={baby:{b:.30,h:.72,e:1.24,x:1.25},toddler:{b:.42,h:.80,e:1.16,x:1.14},kid:{b:.58,h:.88,e:1.08,x:1},preteen:{b:.74,h:.93,e:1.04,x:.96},teen:{b:.88,h:.96,e:1.02,x:.96},young:{b:1,h:1,e:1,x:1},adult:{b:1,h:1,e:1,x:1},senior:{b:.97,h:1,e:.96,x:1}};
+const AGES={baby:{b:.26,h:.50,e:1.24,x:1.25},toddler:{b:.36,h:.60,e:1.16,x:1.14},kid:{b:.52,h:.76,e:1.08,x:1},preteen:{b:.68,h:.85,e:1.04,x:.96},teen:{b:.85,h:.93,e:1.02,x:.96},young:{b:1,h:1,e:1,x:1},adult:{b:1,h:1,e:1,x:1},senior:{b:.97,h:1,e:.96,x:1}};
 const BUILDS={slim:.86,average:1,curvy:1.08,athletic:1.14,plus:1.32};
 const HEIGHTS={short:.93,average:1,tall:1.04};
 function ageOf(p){return AGES[p.ageGroup]?p.ageGroup:(p.age==="kid"?"kid":"adult");}
 function ageFromYears(y){return y==null?null:y<2?"baby":y<4?"toddler":y<9?"kid":y<13?"preteen":y<18?"teen":y<30?"young":y<60?"adult":"senior";}
+function headFrac(p){return Math.min(1,AGES[ageOf(p)].h*1.1);}
+function heightFrac(p){const A=AGES[ageOf(p)],bs=A.b*(HEIGHTS[p.height]||1),dy=(ANK-190)*(1-bs),top=dy+178-156*A.h,bot=ANK+12;return (bot-top)/(bot-22);}
 function bodyOf(p){return p.build==="curvy"||p.build==="plus"?"soft":p.build==="athletic"?"straight":p.body;}
 function svgBody(p,look){
   const lk=Object.assign({acc:[]},p.looks[look]||p.looks.everyday);
@@ -720,7 +722,7 @@ function svgBody(p,look){
 function svgHead(p,ex){
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="400" height="400">${DEFS}<defs><clipPath id="hc"><rect x="-20" y="-20" width="240" height="${p.hair==="hijab"?214:190}"/></clipPath></defs><g clip-path="url(#hc)">${head(p,ex)}</g></svg>`;
 }
-return {SKINS,HAIRC,EYEC,OPT,LOOKS,DEFAULT_POSE,defaults,svgBody,svgHead,shade,ageFromYears,ageOf};
+return {SKINS,HAIRC,EYEC,OPT,LOOKS,DEFAULT_POSE,defaults,svgBody,svgHead,shade,ageFromYears,ageOf,heightFrac,headFrac};
 })();
 
 const LANGS=[["en","English"],["ar","العربية"],["fr","Français"],["es","Español"],["de","Deutsch"]];
