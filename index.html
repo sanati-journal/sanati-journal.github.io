@@ -71,6 +71,16 @@ section{padding:76px 0}
 @media(max-width:900px){.steps{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.steps{grid-template-columns:1fr}}
 
+/* cast */
+.castwrap{overflow-x:auto;margin:0 -20px;padding:0 20px 8px;scrollbar-width:thin}
+.castwrap img{display:block;height:auto;width:100%;min-width:900px;border-radius:16px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}
+.stats div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center}
+.stats b{display:block;font:700 30px Georgia,serif;color:var(--acc)}
+.stats span{font-size:14px;color:var(--mut)}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
+.hj{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:6px}
+.hj h3{margin-bottom:2px}.hj p{color:var(--mut);font-size:15px;margin-bottom:12px}
 /* gallery */
 .gal{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 20px 22px;margin:0 -20px;scrollbar-width:thin}
 .gal figure{margin:0;flex:none;width:250px;scroll-snap-align:start}
@@ -166,6 +176,19 @@ footer .w{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   </div>
 </div></section>
 
+<section id="cast" style="padding-top:20px"><div class="w">
+  <div class="head"><span class="kick" data-t="cK"></span><h2 data-t="cH"></h2><p class="mut" data-t="cP"></p></div>
+  <div class="castwrap"><img src="img/cast.jpg" alt="" width="2400" height="600"></div>
+  <div class="stats">
+    <div><b>8</b><span data-t="c1"></span></div>
+    <div><b>5</b><span data-t="c2"></span></div>
+    <div><b>3</b><span data-t="c3"></span></div>
+    <div><b>7</b><span data-t="c4"></span></div>
+  </div>
+  <div class="hj"><h3 data-t="hjH"></h3><p data-t="hjP"></p><div class="castwrap" style="margin:0;padding:0 0 6px"><img src="img/hijab-styles.jpg" alt="" width="2100" height="435" loading="lazy" style="min-width:760px"></div></div>
+  <p style="margin-top:22px"><a class="btn" href="design/" data-t="cCta"></a></p>
+</div></section>
+
 <section id="inside" style="padding-top:20px"><div class="w">
   <div class="head"><span class="kick" data-t="inK"></span><h2 data-t="inH"></h2><p class="mut" data-t="inP"></p></div>
   <div class="gal" id="gal"></div>
@@ -232,6 +255,9 @@ en:{brand:SITE.brand.en,nHow:"How it works",nInside:"Inside",nPrice:"Price",nFaq
  lead:"A printed A5 journal with illustrated characters of the people they love, their special days already marked, and trackers picked just for them.",
  cta:"Design your journal",see:"See inside",from:"From {p} · see the price live as you design",
  t1b:"A5",t1:"printed journal",t2b:"12 months",t2:"starting any day",t3b:"5 languages",t3:"including Arabic",t4b:"Preview",t4:"before we print",
+ cK:"The character builder",cH:"A character for everyone in the family.",cP:"From the newborn to the grandparents. You choose the age, body type, height, skin, hair and outfit, and each person is drawn at their real size next to the others.",
+ c1:"age groups, baby to senior",c2:"body types",c3:"heights",c4:"hijab styles",
+ hjH:"Seven hijab styles",hjP:"Classic, Spanish, loose, Turkish, khimar, Amira or turban, in any colour.",cCta:"Build your characters",
  howK:"How it works",howH:"Four steps, about ten minutes.",
  s1h:"Pick the occasion",s1p:"Birthday, wedding, anniversary, graduation, family, new year or anything else.",
  s2h:"Design the characters",s2p:"Choose skin, hair or hijab, eyes, glasses and more for everyone in it. Each one becomes a little illustrated character.",
@@ -266,6 +292,9 @@ ar:{brand:SITE.brand.ar,nHow:"إزاي بيتعمل",nInside:"من جوه",nPric
  lead:"جورنال A5 مطبوع، فيه شخصيات مرسومة للناس اللي بيحبوهم، وأيامهم المميزة متعلّمة، ومتتبعات مختارة مخصوص ليهم.",
  cta:"صمّم جورنالك",see:"شوف من جوه",from:"يبدأ من {p} · وبتشوف السعر وانت بتصمّم",
  t1b:"A5",t1:"جورنال مطبوع",t2b:"12 شهر",t2:"يبدأ من أي يوم",t3b:"5 لغات",t3:"منها العربي",t4b:"معاينة",t4:"قبل الطباعة",
+ cK:"تصميم الشخصيات",cH:"شخصية لكل واحد في العيلة.",cP:"من البيبي لحد الجد والجدة. بتختار السن، شكل الجسم، الطول، لون البشرة، الشعر واللبس، وكل واحد بيترسم بحجمه الحقيقي جنب الباقيين.",
+ c1:"فئات عمرية، من البيبي للكبار",c2:"أشكال جسم",c3:"أطوال",c4:"لفات حجاب",
+ hjH:"سبع لفات حجاب",hjP:"كلاسيك، إسباني، واسع، تركي، خمار، أميرة أو تربون، بأي لون.",cCta:"صمّم شخصياتك",
  howK:"إزاي بيتعمل",howH:"أربع خطوات، حوالي عشر دقايق.",
  s1h:"اختار المناسبة",s1p:"عيد ميلاد، فرح، ذكرى جواز، تخرج، عيلة، سنة جديدة أو أي مناسبة تانية.",
  s2h:"صمّم الشخصيات",s2p:"اختار لون البشرة، الشعر أو الحجاب، العينين، النضارة وغيرهم لكل شخص. كل واحد بيبقى شخصية مرسومة صغيرة.",
