@@ -1131,6 +1131,15 @@ function bindView(){
   const no=$("newOrder");if(no)no.onclick=()=>{const keep={ui:O.ui,lang:O.lang,buyer:O.buyer,phone:O.phone,city:O.city,address:O.address};O=Object.assign(defaults(),keep);for(const k in PH)delete PH[k];SENT=false;go(0);};
   const wl=$("waLink");if(wl)wl.onclick=()=>{wl.href=waUrl();};
 }
+/* ================= order backup in Drive (orders are kept even if the WhatsApp message is never sent) ================= */
+let DRAFT_T=null,DRAFT_LAST="";
+function postOrder(action,text){if(!UPLOAD||!text)return;
+  const body=JSON.stringify({order:O.orderId,action,text,label:[O.owner,O.buyer,O.city].filter(x=>x&&x.trim()).join(" - ")});
+  try{fetch(UPLOAD,{method:"POST",keepalive:body.length<60000,headers:{"Content-Type":"text/plain;charset=utf-8"},body}).catch(()=>{});}catch(e){}}
+function draftSoon(now){if(!UPLOAD||SENT||STEP!==STEPS.length-1||(O.phone||"").replace(/\D/g,"").length<8)return;
+  clearTimeout(DRAFT_T);DRAFT_T=setTimeout(async()=>{try{const m=await message();if(m===DRAFT_LAST)return;DRAFT_LAST=m;postOrder("draft",m);}catch(e){}},now?0:3000);}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")draftSoon(true);});
+$("view").addEventListener("input",()=>draftSoon());$("view").addEventListener("change",()=>draftSoon());
 $("back").onclick=()=>go(STEP-1);
 $("next").onclick=async()=>{
   const e=check(STEP);if(e){const er=$("err");if(er){er.textContent=e;er.scrollIntoView({block:"center",behavior:"smooth"});}return;}
@@ -1138,7 +1147,7 @@ $("next").onclick=async()=>{
   for(let i=0;i<STEPS.length;i++){const m=check(i);if(m){go(i);setTimeout(()=>{const er=$("err");if(er)er.textContent=m;},50);return;}}
   if(uploading()){const er=$("err");if(er){er.textContent=t("phWait");er.scrollIntoView({block:"center",behavior:"smooth"});}return;}
   if(!MSG)MSG=await message();
-  if(UPLOAD&&O.photoFolder)try{fetch(UPLOAD,{method:"POST",keepalive:true,headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({order:O.orderId,action:"name",label:[O.owner,O.buyer,O.city].filter(Boolean).join(" - ")})}).catch(()=>{});}catch(e){}
+  clearTimeout(DRAFT_T);postOrder("order",MSG);
   if(SHOP.whatsapp)window.open(waUrl(),"_blank","noopener");
   else{try{await navigator.clipboard.writeText(MSG);}catch(x){}}
   SENT=true;const keep=MSG;render();MSG=keep;window.scrollTo({top:0,behavior:"smooth"});
