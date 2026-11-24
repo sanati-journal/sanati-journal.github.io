@@ -4,7 +4,7 @@
    - photos, one file per character
    - draft.txt: saved when the customer reaches the last step and enters a phone number
    - order.txt: saved when the customer taps "Send order" (even if they never send the WhatsApp message)
-  Folder names start with the status: DRAFT, NEW. The daily task renames NEW to PDF READY.
+  Folder names start with the status: DRAFT or NEW. A daily task turns NEW orders into preview PDFs.
 
   Setup (once): script.google.com > New project > paste this file > Deploy > New deployment >
   type "Web app", Execute as "Me", Who has access "Anyone" > Deploy > authorise.
